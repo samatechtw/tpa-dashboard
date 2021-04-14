@@ -1,0 +1,103 @@
+$white: #fff;
+$black: #000;
+$dark1: #1b2023;
+$dark2: #212528;
+$dark3: #495057;
+$text-light: #a2a2a2;
+$grey1: #f5f6f8;
+$grey3: #d5d5d5;
+$blue: #0087cb;
+$orange: #f46a6a;
+$green: #34C38F;
+$red: #f46a6a;
+
+$overlay: rgba(0, 0, 0, 0.6);
+
+
+@define-mixin flex-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+@define-mixin flex-center-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@define-mixin overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@define-mixin title $size {
+  font-family: 'Montserrat', 'Avenir', Helvetica;
+  font-weight: 700;
+  font-size: $size;
+}
+
+@define-mixin semibold $size {
+  font-family: 'Montserrat', 'Avenir', Helvetica;
+  font-weight: 600;
+  font-size: $size;
+}
+
+@define-mixin medium $size {
+  font-family: 'Montserrat', 'Avenir', Helvetica;
+  font-weight: 500;
+  font-size: $size;
+}
+
+@define-mixin text $size {
+  font-family: 'Montserrat', Garamond, serif;
+  font-weight: 400;
+  font-size: $size;
+}
+
+@define-mixin subtitle {
+  @mixin text 16px;
+  color: $text-light;
+  margin: 32px auto 0;
+  text-align: center;
+  max-width: 670px;
+  line-height: 24px;
+}
+
+@define-mixin fancy-underline {
+  margin: 0 auto;
+  padding: 0;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    width: 0px;
+    height: 3px;
+    margin: 5px 0 0;
+    transition: all 0.2s ease-in-out;
+    transition-duration: 0.5s;
+    opacity: 0;
+    background-color: $black;
+  }
+  &:before {
+    left: 50%;
+  }
+  &:after {
+    right: 50%;
+  }
+  &.selected {
+    &:before,
+    &:after {
+      width: 50%;
+      opacity: 1;
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "dashboard": "Dashboard",
+  "connect": "Connect Wallet",
+  "disconnect": "Disconnect Wallet",
+  "no_wallet": "No Wallet Connected",
+  "unstaked": "Unstaked TPA",
+  "stake": "Stake TPA",
+  "get": "Get more TPA",
+  "tpa_amount": "{amount} TPA",
+  "tpa_interest": "{diff} ({percent}%) ",
+  "all_time": "All time",
+  "pool": "TPA Pool",
+  "duration": "Time Scale:",
+  "change": "Change",
+  "graph_percent": "{percent}%",
+  "time": [
+    {
+      "label": "Week",
+      "short": "1W"
+    },
+    {
+      "label": "Month",
+      "short": "1M"
+    },
+    {
+      "label": "3 Months",
+      "short": "3M"
+    },
+    {
+      "label": "Year",
+      "short": "1Y"
+    },
+    {
+      "label": "All",
+      "short": "All"
+    }
+  ],
+  "select": {
+    "title": "Select a Wallet",
+    "text": "Please select a wallet to connect to this dapp:",
+    "metamask": "Metamask",
+    "walletconnect": "WalletConnect",
+    "connect": "Connect"
+  }
+}
