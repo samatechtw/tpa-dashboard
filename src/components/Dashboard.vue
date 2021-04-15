@@ -108,7 +108,7 @@ export default {
       if(initialStakedTpa.value === 0) {
         return 0;
       }
-      return (userDiff.value / initialStakedTpa.value).toFixed(2);
+      return (100 * (userDiff.value / initialStakedTpa.value)).toFixed(3);
     });
     const allTimeSign = computed(() => signClass(userDiff.value));
 
@@ -122,7 +122,7 @@ export default {
       if(first === last || first === 0) {
         return 0;
       }
-      return (last - first) / first;
+      return (100 * ((last - first) / first)).toFixed(3);
     });
     const graphPercentStr = computed(() => signedStr(graphPercent.value));
     const graphPercentSign = computed(() => signClass(graphPercent.value));
