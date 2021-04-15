@@ -33,6 +33,10 @@ a {
   text-decoration: none;
 }
 
+#app {
+  height: 100%;
+}
+
 .container {
   max-width: 1100px;
   box-sizing: border-box;

@@ -140,14 +140,18 @@ export default {
     .connect-options {
       flex-wrap: wrap;
       padding: 0;
+      justify-content: center;
     }
     .connect-button {
-      width: 100%;
       min-width: unset;
       margin: 0;
     }
+    .metamask {
+      margin-right: 0;
+    }
     .walletconnect {
       margin-top: 16px;
+      margin-left: 0;
     }
   }
 }

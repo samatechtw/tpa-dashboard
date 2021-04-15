@@ -46,7 +46,7 @@ export default {
   position: absolute;
   left: 0;
   width: 100%;
-  top: 24px;
+  top: 20px;
 }
 .menu-enter-active, .menu-leave-active {
   transition: all 250ms;

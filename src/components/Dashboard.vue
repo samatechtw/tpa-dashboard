@@ -191,6 +191,7 @@ export default {
     }
     .dashboard-stake {
       width: 42%;
+      min-width: 320px;
       margin-left: 24px;
       display: flex;
       padding-top: 36px;
@@ -279,6 +280,18 @@ export default {
         &:hover {
           text-decoration: underline;
         }
+      }
+    }
+  }
+  @media (max-width: 640px) {
+    .dashboard-top {
+      flex-wrap: wrap;
+      .dashboard-stake, .dashboard-staked {
+        width: 100%;
+      }
+      .dashboard-stake {
+        margin-top: 24px;
+        margin-left: 0;
       }
     }
   }

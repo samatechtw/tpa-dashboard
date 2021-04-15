@@ -77,6 +77,9 @@ export default {
       .connected {
         color: $red;
       }
+      .header-right-text {
+        text-align: right;
+      }
     }
   }
 }

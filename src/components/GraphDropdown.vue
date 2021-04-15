@@ -81,10 +81,9 @@ $caret-size: 6px;
     }
   }
   .graph-dropdown-labels {
-    background-color: $grey1;
+    background-color: white;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-    padding-left: 8px;
-    padding-bottom: 6px;
+    padding: 6px 0 6px 8px;
     color: $dark3;
     > div:not(:first-child) {
       margin-top: 4px;

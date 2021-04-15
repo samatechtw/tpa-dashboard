@@ -70,5 +70,9 @@ export default {
   .fade-enter-from, .fade-leave-to {
     opacity: 0;
   }
+  @media (max-width: 640px) {
+    height: 100%;
+    padding-bottom: 40px;
+  }
 }
 </style>
