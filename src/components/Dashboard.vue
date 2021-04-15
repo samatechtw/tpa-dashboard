@@ -62,7 +62,17 @@
           <span class="graph-change-text">{{ $t('change') }}</span>
         </div>
       </div>
-      <Graph />
+      <Graph :points="tpaWindow" />
+      <div class="graph-time">
+        <div
+          v-for="(short, index) in $tm('time').map(s => s.short)"
+          :key="index"
+          :class="{ active: index === timeIndex }"
+          @click="store.setTimeIndex(index)"
+        >
+          {{ short }}
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -73,6 +83,8 @@ import { computed } from 'vue';
 import storeSetup from '/src/store';
 
 const sign = val => (val >= 0) ? '+' : '';
+const signClass = val => (val >= 0) ? 'positive' : 'negative';
+const signedStr = val => `${sign(val)}${val.toLocaleString()}`;
 
 export default {
   name: 'dashboard',
@@ -80,6 +92,7 @@ export default {
     const store = storeSetup();
     const {
       userTpa,
+      tpaWindow,
       timeIndex,
       initialStakedTpa,
       stakedTpa,
@@ -90,23 +103,19 @@ export default {
     const userTotalStr = computed(() => (
       stakedTpa.value.toLocaleString()
     ));
-    const userDiffStr = computed(() => (
-      `${sign(userDiff.value)}${userDiff.value.toLocaleString()}`
-    ));
+    const userDiffStr = computed(() => signedStr(userDiff.value));
     const userPercentStr = computed(() => {
       if(initialStakedTpa.value === 0) {
         return 0;
       }
       return (userDiff.value / initialStakedTpa.value).toFixed(2);
     });
-    const signClass = val => (val >= 0) ? 'positive' : 'negative';
     const allTimeSign = computed(() => signClass(userDiff.value));
 
     const userTpaStr = computed(() => userTpa.value.toLocaleString());
-    const graphDiffStr = computed(() => {
-      const diff = tpaWindowLastAmount.value - tpaWindowFirstAmount.value;
-      return `${sign(diff)}${diff.toLocaleString()}`;
-    });
+    const graphDiffStr = computed(() => (
+      signedStr(tpaWindowLastAmount.value - tpaWindowFirstAmount.value)
+    ));
     const graphPercent = computed(() => {
       const first = tpaWindowFirstAmount.value;
       const last = tpaWindowLastAmount.value;
@@ -115,9 +124,7 @@ export default {
       }
       return (last - first) / first;
     });
-    const graphPercentStr = computed(() => (
-      `${sign(graphPercent.value)}${graphPercent.value.toLocaleString()}`
-    ));
+    const graphPercentStr = computed(() => signedStr(graphPercent.value));
     const graphPercentSign = computed(() => signClass(graphPercent.value));
     return {
       store,
@@ -127,6 +134,7 @@ export default {
       userTpaStr,
       allTimeSign,
       timeIndex,
+      tpaWindow,
       graphDiffStr,
       graphPercentStr,
       graphPercentSign,
@@ -148,6 +156,7 @@ export default {
   .box {
     border-radius: 4px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    background-color: white;
   }
   .dashboard-top {
     margin-top: 24px;
@@ -222,7 +231,7 @@ export default {
   }
   .dashboard-graph {
     margin-top: 24px;
-    padding: 24px 40px;
+    padding: 24px 40px 32px;
     .graph-top {
       display: flex;
       .graph-title {
@@ -243,7 +252,7 @@ export default {
       .graph-diff {
         @mixin title 18px;
         padding-right: 32px;
-        border-right: 1px solid #d5d5d5;
+        border-right: 1px solid $grey3;
       }
       .graph-change {
         @mixin title 18px;
@@ -252,6 +261,23 @@ export default {
           font-size: 12px;
           color: $dark3;
           margin-left: 8px;
+        }
+      }
+    }
+    .graph-time {
+      @mixin text 12px;
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+      > div {
+        cursor: pointer;
+        margin: 0 24px;
+        &.active {
+          color: $blue;
+          text-decoration: underline;
+        }
+        &:hover {
+          text-decoration: underline;
         }
       }
     }
