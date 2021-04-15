@@ -1,5 +1,4 @@
 <template>
-<!-- eslint-disable vue/max-attributes-per-line -->
 <div class="graph">
   <svg
     :viewBox="`0 0 ${vWidth} ${vHeight}`"
@@ -16,6 +15,7 @@
       :x2="vWidth"
       :y2="yLineLoc(i - 1)"
     />
+    <path class="graph-fill" :d="fillPath" />
     <line
       v-for="i in graphPoints.length - 1"
       :key="i"
@@ -35,7 +35,6 @@
     />
   </svg>
 </div>
-<!-- eslint-enable vue/max-attributes-per-line -->
 </template>
 
 <script>
@@ -81,16 +80,24 @@ export default {
       const { min, max } = minMax(points.value);
       const vWindow = vHeight - (2 * yGutter);
       return points.value.map((p, i) => ({
-        x: round(2 * xGutter + (i * (xWindow / points.value.length))),
+        x: round(xGutter + (i * (xWindow / (points.value.length - 1)))),
         y: round((vWindow - vWindow * ((p.staked - min) / (max - min)))) + yGutter,
       }));
     });
+    const fillPath = computed(() => (
+      `M ${vWidth - xGutter},${vHeight - 1} L ${xGutter},${vHeight - 1}` +
+      graphPoints.value.reduce((prev, cur) => (
+        prev + `L ${cur.x},${cur.y} `
+      ), '')
+      + 'Z'
+    ));
     return {
       vWidth,
       vHeight,
       yLines,
       yLineLoc,
       graphPoints,
+      fillPath,
     };
   },
 };
@@ -112,6 +119,9 @@ export default {
   }
   .graph-point {
     fill: $blue;
+  }
+  .graph-fill {
+    fill: rgba(162, 162, 162, 0.25);
   }
 }
 </style>
