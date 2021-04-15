@@ -12,9 +12,9 @@
       :key="i"
       class="y-grid"
       x1="0"
-      :y1="yLineLoc(i)"
+      :y1="yLineLoc(i - 1)"
       :x2="vWidth"
-      :y2="yLineLoc(i)"
+      :y2="yLineLoc(i - 1)"
     />
     <line
       v-for="i in graphPoints.length - 1"
@@ -71,17 +71,18 @@ export default {
     const vWidth = 400;
     const vHeight = 100;
     const xGutter = 5;
+    const yGutter = 5;
     const yLines = 5;
     const yLineLoc = i => (
-      Math.min(vHeight - 1, (vHeight / yLines) * i)
+      Math.min(vHeight - 1, (vHeight / (yLines - 1)) * i)
     );
     const xWindow = vWidth - (2 * xGutter);
     const graphPoints = computed(() => {
       const { min, max } = minMax(points.value);
-      const vWindow = vHeight - 4;
+      const vWindow = vHeight - (2 * yGutter);
       return points.value.map((p, i) => ({
         x: round(2 * xGutter + (i * (xWindow / points.value.length))),
-        y: round((vWindow -vWindow * ((p.staked - min) / (max - min)))) + 2,
+        y: round((vWindow - vWindow * ((p.staked - min) / (max - min)))) + yGutter,
       }));
     });
     return {
