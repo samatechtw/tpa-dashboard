@@ -24,6 +24,33 @@ html,body {
   }
 }
 
+.box {
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  background-color: white;
+}
+
+.tpa-button {
+  @mixin semibold 15px;
+  background-color: $blue;
+  color: white;
+  border-radius: 4px;
+  padding: 8px 32px;
+  cursor: pointer;
+}
+
+.home-wrap {
+  background-color: $grey1;
+  color: $black;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  @media (max-width: 640px) {
+    height: 100%;
+    padding-bottom: 40px;
+  }
+}
+
 .anchor {
   position: absolute;
   top: -120px;
@@ -49,6 +76,15 @@ a {
     padding-left: 20px;
     padding-right: 20px;
   }
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 </style>

@@ -30,19 +30,37 @@ function generateData(initial, count) {
 
 const initialGraphData = () => generateData(50000, 35);
 
-const state = reactive(
-  localStorage.getItem(storeName)
-    ? JSON.parse(localStorage.getItem(storeName))
-    : {
-      address: null,
-      updated: (new Date()).getTime(),
-      tpaData: initialGraphData(),
-      timeIndex: 2,
-      userTpa: 482,
-    },
-);
+// Increment to clear data on start, to avoid broken app state
+const STORE_VERSION = 6;
 
-watch(state, value => localStorage.setItem(storeName, JSON.stringify(value)));
+const initialState = () => ({
+  version: STORE_VERSION,
+  address: null,
+  updated: (new Date()).getTime(),
+  tpaData: initialGraphData(),
+  timeIndex: 2,
+  userTpa: 0,
+  walletName: null,
+});
+
+const saveState = (value) => {
+  localStorage.setItem(storeName, JSON.stringify(value));
+};
+
+const raw = localStorage.getItem(storeName);
+let data = null;
+if(raw) {
+  data = JSON.parse(raw);
+  if(data.version !== STORE_VERSION) {
+    console.log(`Store upgraded from ${data.version} to ${STORE_VERSION}`);
+    data = initialState();
+    saveState(data);
+  }
+}
+
+const state = reactive(data);
+
+watch(state, saveState);
 
 const tpaWindow = computed(() => {
   const tpa = state.tpaData || [];
@@ -63,6 +81,7 @@ export default () => ({
   timeIndex: computed(() => state.timeIndex),
   userTpa: computed(() => state.userTpa),
   tpaData: computed(() => [...state.tpaData]),
+  walletName: computed(() => state.walletName),
   tpaWindow,
   tpaWindowFirstAmount: computed(() => {
     const window = tpaWindow.value;
@@ -87,10 +106,19 @@ export default () => ({
     }
     return tpa[tpa.length - 1].staked;
   }),
+  setWalletName: (name) => {
+    state.walletName = name;
+  },
   setAddress: (address) => {
     state.address = address;
   },
   setTimeIndex: (index) => {
     state.timeIndex = index;
+  },
+  setUserTpa: (tpa) => {
+    state.userTpa = tpa;
+  },
+  clearState: () => {
+    Object.assign(state, initialState());
   },
 });

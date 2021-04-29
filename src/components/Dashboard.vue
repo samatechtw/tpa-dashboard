@@ -26,11 +26,16 @@
           </div>
         </div>
         <div class="stake-right">
-          <div class="stake-button">
+          <div class="tpa-button">
             {{ $t('stake') }}
           </div>
           <div class="stake-get">
-            <span>{{ $t('get') }}</span>
+            <a v-if="purchaseExternal" :href="purchaseLink" target="_blank">
+              <span>{{ $t('get') }}</span>
+            </a>
+            <router-link v-else :to="purchaseLink">
+              <span>{{ $t('get') }}</span>
+            </router-link>
           </div>
         </div>
       </div>
@@ -81,6 +86,7 @@
 <script>
 import { computed } from 'vue';
 import storeSetup from '/src/store';
+import { PURCHASE_LINK, purchaseExternal } from '/src/utils/config';
 
 const sign = val => (val >= 0) ? '+' : '';
 const signClass = val => (val >= 0) ? 'positive' : 'negative';
@@ -138,6 +144,8 @@ export default {
       graphDiffStr,
       graphPercentStr,
       graphPercentSign,
+      purchaseExternal,
+      purchaseLink: PURCHASE_LINK,
     };
   },
 };
@@ -152,11 +160,6 @@ export default {
   }
   .negative {
     color: $red;
-  }
-  .box {
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    background-color: white;
   }
   .dashboard-top {
     margin-top: 24px;
@@ -209,22 +212,14 @@ export default {
       }
       .stake-right {
         margin-left: auto;
-        .stake-button {
-          @mixin semibold 15px;
-          background-color: $blue;
-          color: white;
-          border-radius: 4px;
-          padding: 8px 32px;
-          cursor: pointer;
-        }
         .stake-get {
-          @mixin semibold 11px;
-          color: $orange;
           margin-top: 6px;
           text-align: center;
-          > span {
+          span {
             border-bottom: 1px solid $orange;
             cursor: pointer;
+            @mixin semibold 11px;
+            color: $orange;
           }
         }
       }

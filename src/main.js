@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import i18n from './i18n';
 import router from './router';
-import clickaway from './clickaway';
+import clickaway from './utils/clickaway';
 
 createApp(App)
   .use(router)

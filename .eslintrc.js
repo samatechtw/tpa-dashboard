@@ -8,6 +8,7 @@ module.exports = {
     'plugin:@intlify/vue-i18n/recommended',
   ],
   parser: 'vue-eslint-parser',
+  parserOptions: { ecmaVersion: 2020 },
   ignorePatterns: ['node_modules/'],
   rules: {
     'no-console': 'off',
@@ -20,6 +21,7 @@ module.exports = {
     'keyword-spacing': ['error', {
       after: false,
       overrides: {
+        finally: { after: true },
         return: { after: true },
         else: { after: true },
         do: { after: true },

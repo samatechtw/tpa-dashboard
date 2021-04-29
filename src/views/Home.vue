@@ -2,46 +2,49 @@
 <div class="home-wrap">
   <Header
     :connected="!!address"
-    @toggle-connect="connect"
+    @toggle-connect="showConnectModal"
   />
   <transition name="fade" mode="out-in">
     <Dashboard v-if="address" />
+    <div v-else-if="loadingAccount" class="dashboard-empty">
+      <Spinner />
+    </div>
     <div v-else class="dashboard-empty">
       {{ $t('no_wallet') }}
     </div>
   </transition>
   <ConnectModal
     :show="showConnect"
+    :error="connectError"
     @cancel="showConnect = false"
-    @connected="connected"
+    @connect="connectWallet"
   />
 </div>
 </template>
 
 <script>
-import { ref } from 'vue';
 import storeSetup from '/src/store';
+import useChain from '/src/chain/useChain';
 
 export default {
   name: 'home',
   setup() {
     const store = storeSetup();
-    const showConnect = ref(false);
-    const connect = () => {
-      if(store.address.value) {
-        store.setAddress(null);
-      } else {
-        showConnect.value = true;
-      }
-    };
-    const connected = (connectedAddress) => {
-      showConnect.value = false;
-      store.setAddress(connectedAddress);
-    };
+    const {
+      connectError,
+      connectWallet,
+      showConnect,
+      showConnectModal,
+      address,
+      loadingAccount,
+    } = useChain(store);
+    
     return {
-      address: store.address,
-      connect,
-      connected,
+      connectError,
+      loadingAccount,
+      address,
+      connectWallet,
+      showConnectModal,
       showConnect,
     };
   },
@@ -52,11 +55,6 @@ export default {
 @import '/src/assets/css/global.css';
 
 .home-wrap {
-  background-color: $grey1;
-  color: $black;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
   .dashboard-empty {
     width: 100%;
     flex-grow: 1;
@@ -69,10 +67,6 @@ export default {
   }
   .fade-enter-from, .fade-leave-to {
     opacity: 0;
-  }
-  @media (max-width: 640px) {
-    height: 100%;
-    padding-bottom: 40px;
   }
 }
 </style>

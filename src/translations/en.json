@@ -41,5 +41,19 @@
     "metamask": "Metamask",
     "walletconnect": "WalletConnect",
     "connect": "Connect"
+  },
+  "faucet": {
+    "no_wallet": "Connect a wallet to access the faucet",
+    "text": "Get 100,000 test TPA.",
+    "faucet_balance": "Faucet balance: {balance}",
+    "balance": "Your balance: {balance}",
+    "button": "GET"
+  },
+  "errors": {
+    "no_metamask": "Metamask was not detected. Make sure you're logged in.",
+    "metamask_denied": "Please select a Metamask wallet, or choose a different connection method.",
+    "no_walletconnect": "Walletconnect not detected.",
+    "user_rejected": "The transaction was rejected.",
+    "unknown": "Unknown connection error."
   }
 }

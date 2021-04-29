@@ -13,6 +13,12 @@
   <meta property="twitter:url" content="https://tpa.finance">
 </head>
 <body>
+  <script>
+    window.process = { env: {} };
+    window.global = window;
+    window.module = {};
+    window.exports = {};
+  </script>
   <div id="app"></div>
   <script type="module" src="/src/main.js"></script>
 </body>

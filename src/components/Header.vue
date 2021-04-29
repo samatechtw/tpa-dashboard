@@ -3,10 +3,12 @@
   <div class="header-blue" />
   <div class="header-content-wrap container">
     <div class="header-content">
-      <div class="header-left">
-        <img :src="Dashboard">
-        {{ $t('dashboard') }}
-      </div>
+      <router-link :to="{ name: 'Home' }">
+        <div class="header-left">
+          <img :src="Dashboard">
+          {{ $t('dashboard') }}
+        </div>
+      </router-link>
       <div class="header-right">
         <div class="header-right-text" @click="$emit('toggle-connect')">
           <span v-if="connected" class="connected">
@@ -58,13 +60,13 @@ export default {
     background-color: white;
     height: 72px;
     border-radius: 4px;
-    color: $blue;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     .header-left {
       @mixin medium 16px;
       pointer-events: none;
       display: flex;
       align-items: baseline;
+      color: $blue;
       img {
         width: 13px;
         margin-right: 8px;

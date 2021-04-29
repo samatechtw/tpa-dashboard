@@ -25,8 +25,11 @@
         <div>{{ $t('select.walletconnect') }}</div>
       </div>
     </div>
+    <div v-if="error" class="connect-error">
+      {{ error }}
+    </div>
     <div class="connect-button-wrap">
-      <div class="connect-button" @click="connect">
+      <div class="connect-button" @click="$emit('connect', selected)">
         {{ $t('select.connect') }}
       </div>
     </div>
@@ -39,18 +42,18 @@ import { ref } from 'vue';
 
 export default {
   name: 'connect-modal',
-  emits: ['cancel', 'connected'],
+  emits: ['cancel', 'connect'],
   props: {
     show: Boolean,
+    error: {
+      type: String,
+      default: null,
+    },
   },
-  setup(_props, { emit }) {
+  setup() {
     const selected = ref('metamask');
-    const connect = () => {
-      emit('connected', '0x0000000000000000000000000000000000000000');
-    };
     return {
       selected,
-      connect,
     };
   },
 };
@@ -121,6 +124,12 @@ export default {
     > img {
       height: 22px;
     }
+  }
+  .connect-error {
+    @mixin medium 11px;
+    color: $red;
+    margin-top: 8px;
+    text-align: center;
   }
   .connect-button-wrap {
     margin-top: 24px;
