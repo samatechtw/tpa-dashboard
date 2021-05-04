@@ -1,6 +1,7 @@
 <template>
 <div class="dashboard-wrap">
   <div class="dashboard container">
+    <RecentTx :tx="latestTxData" />
     <div class="dashboard-top">
       <div class="dashboard-staked box">
         <div class="staked-left">
@@ -26,7 +27,7 @@
           </div>
         </div>
         <div class="stake-right">
-          <div class="tpa-button">
+          <div class="tpa-button" @click="showStakeModal = true">
             {{ $t('stake') }}
           </div>
           <div class="stake-get">
@@ -80,13 +81,22 @@
       </div>
     </div>
   </div>
+  <StakeModal
+    :show="showStakeModal"
+    @cancel="showStakeModal = false"
+  />
 </div>
 </template>
 
 <script>
-import { computed } from 'vue';
-import storeSetup from '/src/store';
-import { PURCHASE_LINK, purchaseExternal } from '/src/utils/config';
+import { computed, watch, onMounted, ref } from 'vue';
+import { useStore } from '/src/store';
+import { useI18n } from 'vue-i18n';
+import useChain from '/src/chain/useChain';
+import {
+  PURCHASE_LINK,
+  purchaseExternal,
+} from '/src/utils/config';
 
 const sign = val => (val >= 0) ? '+' : '';
 const signClass = val => (val >= 0) ? 'positive' : 'negative';
@@ -95,8 +105,11 @@ const signedStr = val => `${sign(val)}${val.toLocaleString()}`;
 export default {
   name: 'dashboard',
   setup() {
-    const store = storeSetup();
+    const store = useStore();
+    const { t } = useI18n();
     const {
+      latestTx,
+      address,
       userTpa,
       tpaWindow,
       timeIndex,
@@ -105,9 +118,12 @@ export default {
       tpaWindowFirstAmount,
       tpaWindowLastAmount,
     } = store;
-    const userDiff = computed(() => stakedTpa.value - initialStakedTpa.value);
+    const { toEth } = useChain(store, t);
+    const showStakeModal = ref(false);
+
+    const userDiff = computed(() => Number(toEth(stakedTpa.value)) - initialStakedTpa.value);
     const userTotalStr = computed(() => (
-      stakedTpa.value.toLocaleString()
+      toEth(stakedTpa.value).toLocaleString()
     ));
     const userDiffStr = computed(() => signedStr(userDiff.value));
     const userPercentStr = computed(() => {
@@ -118,7 +134,7 @@ export default {
     });
     const allTimeSign = computed(() => signClass(userDiff.value));
 
-    const userTpaStr = computed(() => userTpa.value.toLocaleString());
+    const userTpaStr = computed(() => toEth(userTpa.value).toLocaleString());
     const graphDiffStr = computed(() => (
       signedStr(tpaWindowLastAmount.value - tpaWindowFirstAmount.value)
     ));
@@ -132,8 +148,28 @@ export default {
     });
     const graphPercentStr = computed(() => signedStr(graphPercent.value));
     const graphPercentSign = computed(() => signClass(graphPercent.value));
+
+    const latestTxData = computed(() => {
+      const hourAgo = new Date().getTime() - (1000 * 60 * 60);
+      const tx = latestTx.value;
+      if(tx && (tx.timestamp > hourAgo)) {
+        return tx;
+      }
+      return null;
+    });
+
+    watch(address, async (newAddr) => {
+      if(newAddr) {
+      }
+    });
+
+    onMounted(async () => {
+      if(address.value) {
+      }
+    });
     return {
       store,
+      showStakeModal,
       userTotalStr,
       userDiffStr,
       userPercentStr,
@@ -146,6 +182,7 @@ export default {
       graphPercentSign,
       purchaseExternal,
       purchaseLink: PURCHASE_LINK,
+      latestTxData,
     };
   },
 };

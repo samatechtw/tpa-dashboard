@@ -6,6 +6,7 @@
   />
   <transition name="fade" mode="out-in">
     <div v-if="address" class="faucet container">
+      <RecentTx :tx="latestTxData" />
       <div class="faucet-top">
         <div class="faucet-box box">
           <div class="faucet-title">
@@ -50,7 +51,7 @@ import {
   purchaseExternal,
   FAUCET_CONTRACT_ADDRESS,
 } from '/src/utils/config';
-import storeSetup from '/src/store';
+import { useStore, TxType } from '/src/store';
 import { getContract } from '/src/chain/contracts';
 import useChain from '/src/chain/useChain';
 
@@ -77,11 +78,6 @@ const FaucetAbi = [
   }
 ];
 
-const toEth = (val) => {
-  const wei = BigInt(val.toString());
-  return wei / 1000000000000000000n;
-};
-
 export default {
   name: 'faucet',
   setup() {
@@ -90,44 +86,42 @@ export default {
       location.href = PURCHASE_LINK;
       return;
     }
-    const store = storeSetup();
+    const store = useStore();
     const faucetBalance = ref(0);
     const requestLoading = ref(false);
     let faucetContract = null;
     const error = ref(null);
+    const {
+      address,
+      userTpa,
+      latestTx,
+    } = store;
     const {
       connectError,
       connectWallet,
       reconnectWallet,
       showConnect,
       showConnectModal,
-      address,
       getSigner,
       loadingAccount,
       getBalance,
       getUserBalance,
+      submitTx,
       getError,
+      toEth,
     } = useChain(store, t);
 
     const updateFaucetBalance = async () => {
       const val = await getBalance(FAUCET_CONTRACT_ADDRESS);
       faucetBalance.value = toEth(val).toLocaleString();
     };
-
-    watch(address, async (newAddr) => {
-      if(newAddr) {
-        await updateFaucetBalance();
-        faucetContract = getContract(FAUCET_CONTRACT_ADDRESS, FaucetAbi, getSigner());
-      }
-    });
     const balance = computed(() => (
-      toEth(store.userTpa.value).toLocaleString()
+      toEth(userTpa.value).toLocaleString()
     ));
     const faucetRequest = async () => {
       requestLoading.value = true;
       try {
-        const tx = await faucetContract.request();
-        await tx.wait();
+        await submitTx(TxType.FAUCET, faucetContract.request());
         await updateFaucetBalance();
         await getUserBalance();
       } catch(e) {
@@ -135,9 +129,24 @@ export default {
       }
       requestLoading.value = false;
     };
+    const latestTxData = computed(() => {
+      const hourAgo = new Date().getTime() - (1000 * 60 * 60);
+      const tx = latestTx.value;
+      if(tx && (tx.timestamp > hourAgo)) {
+        return tx;
+      }
+      return null;
+    });
+
+    watch(address, async (newAddr) => {
+      if(newAddr) {
+        await updateFaucetBalance();
+        faucetContract = getContract(FAUCET_CONTRACT_ADDRESS, FaucetAbi, getSigner());
+      }
+    });
 
     onMounted(async () => {
-      if(store.address.value) {
+      if(address.value) {
         await reconnectWallet();
         faucetContract = getContract(FAUCET_CONTRACT_ADDRESS, FaucetAbi, getSigner());
         await updateFaucetBalance();
@@ -155,6 +164,7 @@ export default {
       faucetBalance,
       faucetRequest,
       requestLoading,
+      latestTxData,
     };
   },
 };
@@ -164,10 +174,13 @@ export default {
 @import '/src/assets/css/global.css';
 
 .faucet {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   .faucet-top {
     margin-top: 24px;
     display: flex;
-    width: 100%;
     .faucet-box {
       padding: 28px 64px 24px;
       @mixin medium 17px;

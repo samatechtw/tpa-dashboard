@@ -3,6 +3,25 @@ import { sub, add } from 'date-fns';
 
 const storeName = 'dashboard-store';
 
+// Maximum number of historical transactions stored
+const TX_HISTORY_LIMIT = 20;
+
+export const TxType = {
+  APPROVAL: 'tx.approval',
+  STAKE: 'tx.stake',
+  UNSTAKE: 'tx.unstake',
+  WITHDRAW: 'tx.withdraw',
+  REINVEST: 'tx.reinvest',
+  FAUCET: 'tx.faucet',
+};
+
+export const TxStatus = {
+  SUBMITTED: 'tx.submitted',
+  PENDING: 'tx.pending',
+  COMPLETED: 'tx.completed',
+  FAILED: 'tx.failed',
+};
+
 const timeDiffs =[
   { weeks: 1 },
   { months: 1},
@@ -31,7 +50,7 @@ function generateData(initial, count) {
 const initialGraphData = () => generateData(50000, 35);
 
 // Increment to clear data on start, to avoid broken app state
-const STORE_VERSION = 6;
+const STORE_VERSION = 8;
 
 const initialState = () => ({
   version: STORE_VERSION,
@@ -40,7 +59,9 @@ const initialState = () => ({
   tpaData: initialGraphData(),
   timeIndex: 2,
   userTpa: 0,
+  stakedTpa: 0,
   walletName: null,
+  txHistory: [],
 });
 
 const saveState = (value) => {
@@ -76,10 +97,11 @@ const tpaWindow = computed(() => {
   return data;
 });
 
-export default () => ({
+export const useStore = () => ({
   address: computed(() => state.address),
   timeIndex: computed(() => state.timeIndex),
   userTpa: computed(() => state.userTpa),
+  stakedTpa: computed(() => state.stakedTpa),
   tpaData: computed(() => [...state.tpaData]),
   walletName: computed(() => state.walletName),
   tpaWindow,
@@ -99,12 +121,16 @@ export default () => ({
     }
     return tpa[0].staked;
   }),
-  stakedTpa: computed(() => {
-    const tpa = state.tpaData;
-    if(!tpa || !tpa.length) {
-      return 0;
+  // Only care about possible pending TX from the last week
+  latestTx: computed(() => {
+    const tx = state.txHistory[0];
+    if(tx) {
+      const weekMs = 1000 * 60 * 60 * 24 * 7;
+      if(new Date().getTime() - tx.timestamp < weekMs) {
+        return tx;
+      }
     }
-    return tpa[tpa.length - 1].staked;
+    return null;
   }),
   setWalletName: (name) => {
     state.walletName = name;
@@ -117,6 +143,16 @@ export default () => ({
   },
   setUserTpa: (tpa) => {
     state.userTpa = tpa;
+  },
+  setUserStaked: (tpa) => {
+    state.stakedTpa = tpa;
+  },
+  addTx: (tx) => {
+    state.txHistory.unshift(tx);
+    state.txHistory = state.txHistory.slice(0, TX_HISTORY_LIMIT);
+  },
+  updateLatestTx: (tx) => {
+    state.txHistory[0] = tx;
   },
   clearState: () => {
     Object.assign(state, initialState());

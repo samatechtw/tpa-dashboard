@@ -8,3 +8,9 @@ export const FAUCET_CONTRACT_ADDRESS = import.meta.env.VITE_FAUCET_CONTRACT_ADDR
 export const PURCHASE_LINK = import.meta.env.VITE_PURCHASE_LINK;
 
 export const purchaseExternal = PURCHASE_LINK && PURCHASE_LINK.startsWith('http');
+
+let etherscan = ETH_NETWORK === 'mainnet'
+  ? 'https://etherscan.io/tx/'
+  : `https://${ETH_NETWORK}.etherscan.io/tx/`;
+
+export const etherscanLink = etherscan;

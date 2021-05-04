@@ -23,21 +23,31 @@
 </template>
 
 <script>
-import storeSetup from '/src/store';
+import { onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useStore } from '/src/store';
 import useChain from '/src/chain/useChain';
 
 export default {
   name: 'home',
   setup() {
-    const store = storeSetup();
+    const store = useStore();
+    const { t } = useI18n();
+    const { address } = store;
     const {
       connectError,
       connectWallet,
+      reconnectWallet,
       showConnect,
       showConnectModal,
-      address,
       loadingAccount,
-    } = useChain(store);
+    } = useChain(store, t);
+
+    onMounted(async () => {
+      if(address.value) {
+        await reconnectWallet();
+      }
+    });
     
     return {
       connectError,

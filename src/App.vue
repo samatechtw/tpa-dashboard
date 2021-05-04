@@ -44,7 +44,7 @@ html,body {
   color: $black;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   @media (max-width: 640px) {
     height: 100%;
     padding-bottom: 40px;

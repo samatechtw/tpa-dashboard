@@ -13,6 +13,7 @@
   "duration": "Time Scale:",
   "change": "Change",
   "graph_percent": "{percent}%",
+  "etherscan": "(View on Etherscan)",
   "time": [
     {
       "label": "Week",
@@ -42,6 +43,15 @@
     "walletconnect": "WalletConnect",
     "connect": "Connect"
   },
+  "stake_modal": {
+    "title": "Stake TPA",
+    "subtitle1": "Receive dividends from the TPA loan ecosystem by staking at least 100,000 tokens. Tokens may be unstaked at any time.",
+    "subtitle2": "Staking is done in two steps. First, approve tokens for transfer to the staking contract. Then, stake the tokens.",
+    "approve": "Approve",
+    "stake": "Stake",
+    "placeholder": "TPA Amount",
+    "allowance": "TPA Approved:"
+  },
   "faucet": {
     "no_wallet": "Connect a wallet to access the faucet",
     "text": "Get 100,000 test TPA.",
@@ -49,11 +59,26 @@
     "balance": "Your balance: {balance}",
     "button": "GET"
   },
+  "tx": {
+    "approval": "Approval",
+    "stake": "Stake",
+    "unstake": "Unstake",
+    "withdraw": "Withdraw",
+    "reinvest": "Reinvest",
+    "submitted": "Submitted",
+    "pending": "Pending",
+    "completed": "Completed",
+    "failed": "Failed",
+    "title": "Recent Transaction:",
+    "faucet": "Faucet Request",
+    "time": "({time} ago)"
+  },
   "errors": {
     "no_metamask": "Metamask was not detected. Make sure you're logged in.",
     "metamask_denied": "Please select a Metamask wallet, or choose a different connection method.",
     "no_walletconnect": "Walletconnect not detected.",
     "user_rejected": "The transaction was rejected.",
-    "unknown": "Unknown connection error."
+    "unknown": "Unknown connection error.",
+    "number": "Amount must be a number"
   }
 }
