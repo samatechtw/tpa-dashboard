@@ -102,9 +102,9 @@ export default {
       color: $red;
     }
   }
-  .tpa-tx-link {
+  .tpa-tx-link > a {
     @mixin medium 12px;
-    color: $blue;
+    color: black;
     margin-left: 6px;
   }
 }

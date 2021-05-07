@@ -78,6 +78,7 @@
     "metamask_denied": "Please select a Metamask wallet, or choose a different connection method.",
     "no_walletconnect": "Walletconnect not detected.",
     "user_rejected": "The transaction was rejected.",
+    "tx_reverted": "The transaction reverted for an unknown reason. Make sure you have sufficient balance.",
     "unknown": "Unknown connection error.",
     "number": "Amount must be a number"
   }

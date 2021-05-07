@@ -32,8 +32,9 @@
       <div class="stake-allowance">
         {{ allowanceDisplay }}
       </div>
+      <img :src="Reload" @click="updateAllowance">
     </div>
-    <div v-if="allowance > 100000" class="stake-button-wrap">
+    <div v-if="allowance >= 100000" class="stake-button-wrap">
       <div class="stake-button" @click="stake">
         <LoadingText :text="$t('stake_modal.stake')" :loading="!!txState.activeStake" />
       </div>
@@ -94,14 +95,15 @@ export default {
       }
     };
     const approve = async () => {
+      inputError.value = null;
       try {
-        await submitApproval(toWei(amountToApprove.value));        
+        await submitApproval(toWei(amountToApprove.value));
       } catch(e) {
-        console.log('APPERROR', e);
         inputError.value = getError(e);
       }
     };
     const stake = async () => {
+      inputError.value = null;
       try {
         await submitStake(toWei(allowance.value));        
       } catch(e) {
@@ -128,15 +130,19 @@ export default {
       }
       return {};
     });
+    const updateAllowance = async () => {
+      allowance.value = await getUserAllowance();
+    };
     watch(show, async (newShow) => {
       if(newShow) {
-        allowance.value = await getUserAllowance();
+        await updateAllowance();
       }
     });
     return {
       amountToApprove,
       allowance,
       allowanceDisplay,
+      updateAllowance,
       approve,
       stake,
       setAmount,
@@ -191,12 +197,18 @@ export default {
   .stake-allowance-wrap {
     display: flex;
     margin-top: 16px;
+    align-items: center;
     .stake-allowance-text {
       @mixin medium 15px;
     }
     .stake-allowance {
       @mixin semibold 15px;
       margin-left: 6px;
+    }
+    img {
+      width: 20px;
+      cursor: pointer;
+      margin-left: 12px;
     }
   }
 }

@@ -68,7 +68,7 @@ export default function useChain(store, t) {
       await setupProvider(walletProvider);
       await getUserInfo();
     } catch(e) {
-      console.log('Fail to reconnect');
+      console.log('Fail to reconnect', e);
       disconnect();
     }
   };
@@ -79,12 +79,10 @@ export default function useChain(store, t) {
       const walletProvider = await setupWallet(walletName);
       await walletSource.value.connectWallet(walletProvider);
       const address = await setupProvider(walletProvider);
-      console.log('SIGNING', address);
       showConnect.value = false;
       store.setAddress(address);
       await getUserInfo();
     } catch(error) {
-      console.log('ERROR', error);
       connectError.value = error.message;
     } finally {
       loadingAccount.value = false;
@@ -157,7 +155,6 @@ export default function useChain(store, t) {
   };
 
   const getTxReceipt = (hash) => {
-    console.log('GET TX RECEIPT', state.provider, hash);
     if(state.provider) {
       return state.provider.getTransactionReceipt(hash);
     }

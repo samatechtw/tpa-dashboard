@@ -78,10 +78,11 @@ export default {
     const xWindow = vWidth - (2 * xGutter);
     const graphPoints = computed(() => {
       const { min, max } = minMax(points.value);
+      const range = (max - min > 0) ? max - min : 1;
       const vWindow = vHeight - (2 * yGutter);
       return points.value.map((p, i) => ({
         x: round(xGutter + (i * (xWindow / (points.value.length - 1)))),
-        y: round((vWindow - vWindow * ((p.staked - min) / (max - min)))) + yGutter,
+        y: round((vWindow - vWindow * ((p.staked - min) / range))) + yGutter,
       }));
     });
     const fillPath = computed(() => (

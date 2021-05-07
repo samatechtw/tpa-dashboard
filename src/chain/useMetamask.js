@@ -31,6 +31,8 @@ export default function useMetamask(t) {
   const getError = (error) => {
     if(error.code === 4001) {
       return t('errors.user_rejected');
+    } else if(error.code === -32603) {
+      return t('errors.tx_reverted');
     }
     console.log(error);
     return t('errors.unknown');

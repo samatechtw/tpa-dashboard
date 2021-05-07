@@ -1,5 +1,5 @@
 import { reactive, computed, watch } from 'vue';
-import { sub, add } from 'date-fns';
+import { sub } from 'date-fns';
 
 const storeName = 'dashboard-store';
 
@@ -30,6 +30,8 @@ const timeDiffs =[
   { years: 100 },
 ];
 
+/* Use for generating test graph data
+
 function randInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -48,9 +50,22 @@ function generateData(initial, count) {
 }
 
 const initialGraphData = () => generateData(50000, 35);
+*/
+
+// Initialize with two points to make Graph.vue implementation simpler
+const initialGraphData = () => ([
+  {
+    staked: 0,
+    date: sub(new Date(), { days: 2 }).getTime(),
+  },
+  {
+    staked: 0,
+    date: sub(new Date(), { days: 1 }).getTime(),
+  },
+]);
 
 // Increment to clear data on start, to avoid broken app state
-const STORE_VERSION = 8;
+const STORE_VERSION = 11;
 
 const initialState = () => ({
   version: STORE_VERSION,
@@ -68,15 +83,21 @@ const saveState = (value) => {
   localStorage.setItem(storeName, JSON.stringify(value));
 };
 
+const initialStateSetup = () => {
+  data = initialState();
+  saveState(data);
+};
+
 const raw = localStorage.getItem(storeName);
 let data = null;
 if(raw) {
   data = JSON.parse(raw);
   if(data.version !== STORE_VERSION) {
     console.log(`Store upgraded from ${data.version} to ${STORE_VERSION}`);
-    data = initialState();
-    saveState(data);
+    initialStateSetup();
   }
+} else {
+  initialStateSetup();
 }
 
 const state = reactive(data);
