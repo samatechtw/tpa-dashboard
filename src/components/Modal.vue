@@ -2,6 +2,9 @@
 <transition name="modal">
   <div v-if="show" class="modal-outer" @click="clickOutside">
     <div class="modal-inner">
+      <div class="modal-close-wrap" @click="$emit('cancel')">
+        <img :src="Close">
+      </div>
       <slot />
     </div>
   </div>
@@ -49,6 +52,20 @@ export default {
   background-color: rgba(0, 0, 0, 0.6);
   @mixin overlay;
   @mixin flex-center;
+}
+.modal-inner {
+  position: relative;
+}
+.modal-close-wrap {
+  position: absolute;
+  top: 8px;
+  right: 48px;
+  padding: 8px;
+  cursor: pointer;
+  img {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .modal-enter-active,

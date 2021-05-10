@@ -5,6 +5,7 @@
   "no_wallet": "No Wallet Connected",
   "unstaked": "Unstaked TPA",
   "stake": "Stake TPA",
+  "unstake": "Unstake",
   "get": "Get more TPA",
   "tpa_amount": "{amount} TPA",
   "tpa_interest": "{diff} ({percent}%) ",
@@ -52,6 +53,11 @@
     "placeholder": "TPA Amount",
     "allowance": "TPA Approved:"
   },
+  "unstake_modal": {
+    "title": "Unstake TPA",
+    "subtitle": "Unstake your TPA. WARNING - this cannot be undone, and your unstaked TPA will be locked for {days} days. Visit this page again after {days} days to retrieve your locked TPA.",
+    "staked": "Staked TPA"
+  },
   "faucet": {
     "no_wallet": "Connect a wallet to access the faucet",
     "text": "Get 100,000 test TPA.",
@@ -79,6 +85,7 @@
     "no_walletconnect": "Walletconnect not detected.",
     "user_rejected": "The transaction was rejected.",
     "tx_reverted": "The transaction reverted for an unknown reason. Make sure you have sufficient balance.",
+    "nonce_high": "Nonce too high. Try resetting your Metamask account.",
     "unknown": "Unknown connection error.",
     "number": "Amount must be a number"
   }

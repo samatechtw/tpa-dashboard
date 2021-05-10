@@ -120,6 +120,7 @@ export default {
     ));
     const faucetRequest = async () => {
       requestLoading.value = true;
+      error.value = null;
       try {
         await submitTx(TxType.FAUCET, faucetContract.request());
         await updateFaucetBalance();

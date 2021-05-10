@@ -15,7 +15,12 @@
             <span class="staked-diff-text">{{ $t('all_time') }}</span>
           </div>
         </div>
-        <img :src="Graph">
+        <div class="staked-right">
+          <img :src="Graph">
+          <div v-if="userTotal > 0" class="unstake" @click="showUnstakeModal = true">
+            <span>{{ $t('unstake') }}</span>
+          </div>
+        </div>
       </div>
       <div class="dashboard-stake box">
         <div class="stake-left">
@@ -85,6 +90,10 @@
     :show="showStakeModal"
     @cancel="showStakeModal = false"
   />
+  <UnstakeModal
+    :show="showUnstakeModal"
+    @cancel="showUnstakeModal = false"
+  />
 </div>
 </template>
 
@@ -120,6 +129,7 @@ export default {
     } = store;
     const { toEth } = useChain(store, t);
     const showStakeModal = ref(false);
+    const showUnstakeModal = ref(false);
 
     const userDiff = computed(() => Number(toEth(stakedTpa.value)) - initialStakedTpa.value);
     const userTotalStr = computed(() => (
@@ -170,7 +180,9 @@ export default {
     return {
       store,
       showStakeModal,
+      showUnstakeModal,
       userTotalStr,
+      userTotal: stakedTpa,
       userDiffStr,
       userPercentStr,
       userTpaStr,
@@ -224,9 +236,17 @@ export default {
           @mixin text 10px;
         }
       }
-      img {
+      .staked-right {
         margin-left: auto;
-        width: 48px;
+        .unstake {
+          cursor: pointer;
+          @mixin semibold 11px;
+          color: $orange;
+          border-bottom: 1px solid $orange;
+        }
+        img {
+          width: 48px;
+        }
       }
     }
     .dashboard-stake {
@@ -254,7 +274,6 @@ export default {
           text-align: center;
           span {
             border-bottom: 1px solid $orange;
-            cursor: pointer;
             @mixin semibold 11px;
             color: $orange;
           }

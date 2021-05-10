@@ -1,4 +1,5 @@
 import { ethers } from 'ethers/lib.esm';
+import {  intervalToDuration } from 'date-fns';
 import { ref } from 'vue';
 import { TOKEN_CONTRACT_ADDRESS, STAKING_CONTRACT_ADDRESS } from '/src/utils/config';
 import { TxStatus, TxType } from '/src/store';
@@ -119,6 +120,12 @@ export default function useChain(store, t) {
     return toEth(allowance);
   };
 
+  const getUnstakeDays = async () => {
+    const time = await state.stakingContract.unstakeTime();
+    const duration = intervalToDuration({ start: 0, end: time * 1000 });
+    return duration.days || 1;
+  };
+
   const getBalance = (address) => {
     return state.tokenContract.balanceOf(address);
   };
@@ -137,6 +144,13 @@ export default function useChain(store, t) {
     await submitTx(
       TxType.STAKE,
       state.stakingContract.stake(amount.toString()),
+    );
+  };
+
+  const submitUnstake = async () => {
+    await submitTx(
+      TxType.UNSTAKE,
+      state.stakingContract.unstake(),
     );
   };
 
@@ -205,12 +219,14 @@ export default function useChain(store, t) {
     connectWallet,
     reconnectWallet,
     disconnectWallet,
+    getUnstakeDays,
     getUserBalance,
     getUserAllowance,
     getUserStaked,
     getBalance,
     submitTx,
     submitStake,
+    submitUnstake,
     submitApproval,
     getTx,
     getTxReceipt,

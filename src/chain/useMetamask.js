@@ -32,6 +32,10 @@ export default function useMetamask(t) {
     if(error.code === 4001) {
       return t('errors.user_rejected');
     } else if(error.code === -32603) {
+      // Hacky check for nonce issue
+      if(error.message.includes('-32000')) {
+        return t('errors.nonce_high');
+      }
       return t('errors.tx_reverted');
     }
     console.log(error);

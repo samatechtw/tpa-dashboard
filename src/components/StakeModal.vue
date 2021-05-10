@@ -17,8 +17,8 @@
       :placeholder="$t('stake_modal.placeholder')"
       @update:modelValue="setAmount"
     />
-    <div v-if="inputError || error" class="stake-error">
-      {{ inputError || error }}
+    <div v-if="inputError" class="stake-error">
+      {{ inputError }}
     </div>
     <div class="stake-button-wrap">
       <div class="stake-button" @click="approve">
@@ -55,13 +55,9 @@ const isTxActive = tx => (
 
 export default {
   name: 'stake-modal',
-  emits: ['cancel', 'stake'],
+  emits: ['cancel'],
   props: {
     show: Boolean,
-    error: {
-      type: String,
-      default: null,
-    },
   },
   setup(props) {
     const { show } = toRefs(props);

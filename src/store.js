@@ -72,7 +72,7 @@ const initialState = () => ({
   address: null,
   updated: (new Date()).getTime(),
   tpaData: initialGraphData(),
-  timeIndex: 2,
+  timeIndex: 1,
   userTpa: 0,
   stakedTpa: 0,
   walletName: null,
