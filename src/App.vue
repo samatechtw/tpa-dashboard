@@ -38,6 +38,11 @@ html,body {
   padding: 8px 32px;
   cursor: pointer;
 }
+.tpa-error {
+  @mixin medium 11px;
+  color: $red;
+  margin-top: 8px;
+}
 
 .home-wrap {
   background-color: $grey1;

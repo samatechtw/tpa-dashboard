@@ -6,6 +6,8 @@ const storeName = 'dashboard-store';
 // Maximum number of historical transactions stored
 const TX_HISTORY_LIMIT = 20;
 
+const DAY_MS = 1000 * 60 * 60 * 24;
+
 export const TxType = {
   APPROVAL: 'tx.approval',
   STAKE: 'tx.stake',
@@ -13,6 +15,8 @@ export const TxType = {
   WITHDRAW: 'tx.withdraw',
   REINVEST: 'tx.reinvest',
   FAUCET: 'tx.faucet',
+  DIVIDEND: 'tx.dividend',
+  ADD_ADMIN: 'tx.add_admin',
 };
 
 export const TxStatus = {
@@ -77,6 +81,7 @@ const initialState = () => ({
   stakedTpa: 0,
   walletName: null,
   txHistory: [],
+  admin: false,
 });
 
 const saveState = (value) => {
@@ -118,7 +123,26 @@ const tpaWindow = computed(() => {
   return data;
 });
 
+const tpaWindowLastAmount = computed(() => {
+  const window = tpaWindow.value;
+  const { length } = window;
+  return (length > 0) ? window[length - 1].staked : 0;
+});
+
+const updateTpaData = (stakedTpa) => {
+  const data = state.tpaData || [];
+  const dataLen = data.length;
+  const prevTime = dataLen ? data[dataLen - 1].date : 0;
+  const time = new Date().getTime();
+  if(time - prevTime > DAY_MS) {
+    state.tpaData = [...data, { staked: stakedTpa, date: time }];
+  } else {
+    state.tpaData[dataLen - 1].staked = stakedTpa;
+  }
+};
+
 export const useStore = () => ({
+  isUserAdmin: computed(() => state.admin),
   address: computed(() => state.address),
   timeIndex: computed(() => state.timeIndex),
   userTpa: computed(() => state.userTpa),
@@ -130,11 +154,7 @@ export const useStore = () => ({
     const window = tpaWindow.value;
     return (window.length > 0) ? window[0].staked : 0;
   }),
-  tpaWindowLastAmount: computed(() => {
-    const window = tpaWindow.value;
-    const { length } = window;
-    return (length > 0) ? window[length - 1].staked : 0;
-  }),
+  tpaWindowLastAmount,
   initialStakedTpa: computed(() => {
     const tpa = state.tpaData;
     if(!tpa || !tpa.length) {
@@ -146,7 +166,7 @@ export const useStore = () => ({
   latestTx: computed(() => {
     const tx = state.txHistory[0];
     if(tx) {
-      const weekMs = 1000 * 60 * 60 * 24 * 7;
+      const weekMs = DAY_MS * 7;
       if(new Date().getTime() - tx.timestamp < weekMs) {
         return tx;
       }
@@ -167,6 +187,10 @@ export const useStore = () => ({
   },
   setUserStaked: (tpa) => {
     state.stakedTpa = tpa;
+    updateTpaData(tpa);
+  },
+  setUserAdmin: (admin) => {
+    state.admin = admin;
   },
   addTx: (tx) => {
     state.txHistory.unshift(tx);

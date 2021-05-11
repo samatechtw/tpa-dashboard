@@ -2,6 +2,7 @@
 <div class="dashboard-wrap">
   <div class="dashboard container">
     <RecentTx :tx="latestTxData" />
+    <Admin v-if="isUserAdmin" />
     <div class="dashboard-top">
       <div class="dashboard-staked box">
         <div class="staked-left">
@@ -117,8 +118,8 @@ export default {
     const store = useStore();
     const { t } = useI18n();
     const {
+      isUserAdmin,
       latestTx,
-      address,
       userTpa,
       tpaWindow,
       timeIndex,
@@ -146,7 +147,7 @@ export default {
 
     const userTpaStr = computed(() => toEth(userTpa.value).toLocaleString());
     const graphDiffStr = computed(() => (
-      signedStr(tpaWindowLastAmount.value - tpaWindowFirstAmount.value)
+      signedStr(toEth(tpaWindowLastAmount.value) - toEth(tpaWindowFirstAmount.value))
     ));
     const graphPercent = computed(() => {
       const first = tpaWindowFirstAmount.value;
@@ -168,17 +169,9 @@ export default {
       return null;
     });
 
-    watch(address, async (newAddr) => {
-      if(newAddr) {
-      }
-    });
-
-    onMounted(async () => {
-      if(address.value) {
-      }
-    });
     return {
       store,
+      isUserAdmin,
       showStakeModal,
       showUnstakeModal,
       userTotalStr,
@@ -203,6 +196,10 @@ export default {
 <style lang="postcss">
 @import '/src/assets/css/global.css';
 
+.dashboard-wrap {
+  padding-bottom: 40px;
+  background-color: $grey1;
+}
 .dashboard {
   .positive {
     color: $green;

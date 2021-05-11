@@ -17,6 +17,8 @@ const state = {
   signer: null,
   stakingContract: null,
   tokenContract: null,
+  loaded: false,
+  loadCallbackList: [],
 };
 
 const chainId = ref(null);
@@ -33,6 +35,14 @@ export default function useChain(store, t) {
       disconnectWallet();
     } else {
       showConnect.value = true;
+    }
+  };
+
+  const onLoad = async (callback) => {
+    if(state.loaded) {
+      await callback;
+    } else {
+      state.loadCallbackList.push(callback);
     }
   };
 
@@ -59,11 +69,14 @@ export default function useChain(store, t) {
   };
 
   const getUserInfo = async () => {
+    await getUserAdmin();
     await getUserBalance();
     await getUserStaked();
+    state.loadCallbackList.forEach(async cb => await cb);
   };
 
   const reconnectWallet = async () => {
+    loadingAccount.value = true;
     try {
       const walletProvider = await setupWallet(store.walletName.value);
       await setupProvider(walletProvider);
@@ -71,10 +84,13 @@ export default function useChain(store, t) {
     } catch(e) {
       console.log('Fail to reconnect', e);
       disconnect();
+    } finally {
+      loadingAccount.value = false;
     }
   };
 
   const connectWallet = async (walletName) => {
+    loadingAccount.value = true;
     store.setWalletName(walletName);
     try {
       const walletProvider = await setupWallet(walletName);
@@ -113,6 +129,7 @@ export default function useChain(store, t) {
   };
 
   const getUserAllowance = async () => {
+    console.log(state);
     const allowance = await state.tokenContract.allowance(
       address.value,
       state.stakingContract.address,
@@ -124,6 +141,11 @@ export default function useChain(store, t) {
     const time = await state.stakingContract.unstakeTime();
     const duration = intervalToDuration({ start: 0, end: time * 1000 });
     return duration.days || 1;
+  };
+
+  const getUserAdmin = async () => {
+    const admin = await state.stakingContract.isAdmin(address.value);
+    store.setUserAdmin(admin); 
   };
 
   const getBalance = (address) => {
@@ -158,6 +180,20 @@ export default function useChain(store, t) {
     await submitTx(
       TxType.APPROVAL,
       state.tokenContract.approve(state.stakingContract.address, amount.toString()),
+    );
+  };
+
+  const submitDividend = async (amount) => {
+    await submitTx(
+      TxType.DIVIDEND,
+      state.stakingContract.postDividend(amount),
+    );
+  };
+
+  const submitAddAdmin = async (adminAddress) => {
+    await submitTx(
+      TxType.ADD_ADMIN,
+      state.stakingContract.addAdmin(adminAddress),
     );
   };
 
@@ -198,27 +234,29 @@ export default function useChain(store, t) {
     provider.on('close', () => disconnect());
     provider.on('accountsChanged', async (accounts) => {
       store.setAddress(accounts[0]);
-      await getUserBalance();
+      await getUserInfo();
     });
     provider.on('chainChanged', async (chainId) => {
       chainId.value = chainId;
-      await getUserBalance();
+      await getUserInfo();
     });
 
     provider.on('networkChanged', async (_networkId) => {
       const network = await provider.value.getNetwork();
       chainId.value = network.chainId();
-      await getUserBalance();
+      await getUserInfo();
     });
   };
 
   return {
+    onLoad,
     loadingAccount,
     showConnect,
     showConnectModal,
     connectWallet,
     reconnectWallet,
     disconnectWallet,
+    getUserAdmin,
     getUnstakeDays,
     getUserBalance,
     getUserAllowance,
@@ -227,6 +265,8 @@ export default function useChain(store, t) {
     submitTx,
     submitStake,
     submitUnstake,
+    submitDividend,
+    submitAddAdmin,
     submitApproval,
     getTx,
     getTxReceipt,

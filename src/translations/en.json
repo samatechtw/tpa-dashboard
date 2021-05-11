@@ -15,6 +15,7 @@
   "change": "Change",
   "graph_percent": "{percent}%",
   "etherscan": "(View on Etherscan)",
+  "approve": "Approve",
   "time": [
     {
       "label": "Week",
@@ -48,7 +49,6 @@
     "title": "Stake TPA",
     "subtitle1": "Receive dividends from the TPA loan ecosystem by staking at least 100,000 tokens. Tokens may be unstaked at any time.",
     "subtitle2": "Staking is done in two steps. First, approve tokens for transfer to the staking contract. Then, stake the tokens.",
-    "approve": "Approve",
     "stake": "Stake",
     "placeholder": "TPA Amount",
     "allowance": "TPA Approved:"
@@ -71,6 +71,8 @@
     "unstake": "Unstake",
     "withdraw": "Withdraw",
     "reinvest": "Reinvest",
+    "dividend": "Post Dividend",
+    "add_admin": "Add Admin",
     "submitted": "Submitted",
     "pending": "Pending",
     "completed": "Completed",
@@ -78,6 +80,14 @@
     "title": "Recent Transaction:",
     "faucet": "Faucet Request",
     "time": "({time} ago)"
+  },
+  "admin": {
+    "title": "TPA Admin",
+    "approve": "Approve Dividend",
+    "add": "Add New Admin",
+    "add_button": "Add",
+    "post": "Post",
+    "address": "New Address"
   },
   "errors": {
     "no_metamask": "Metamask was not detected. Make sure you're logged in.",

@@ -17,12 +17,12 @@
       :placeholder="$t('stake_modal.placeholder')"
       @update:modelValue="setAmount"
     />
-    <div v-if="inputError" class="stake-error">
+    <div v-if="inputError" class="tpa-error">
       {{ inputError }}
     </div>
     <div class="stake-button-wrap">
       <div class="stake-button" @click="approve">
-        <LoadingText :text="$t('stake_modal.approve')" :loading="!!txState.activeApproval" />
+        <LoadingText :text="$t('approve')" :loading="!!txState.activeApproval" />
       </div>
     </div>
     <div class="stake-allowance-wrap">
@@ -169,11 +169,6 @@ export default {
     @mixin text 15px;
     margin-top: 16px;
     line-height: 24px;
-  }
-  .stake-error {
-    @mixin medium 11px;
-    color: $red;
-    margin-top: 8px;
   }
   .tpa-input-wrap {
     max-width: 280px;
