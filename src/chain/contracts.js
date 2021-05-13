@@ -8,31 +8,59 @@ export function stakingContract(signer, address) {
   return getContract(address, StakingABI, signer);
 }
 
+export function lockerContract(signer, address) {
+  return getContract(address, LockerABI, signer);
+}
+
 export function getContract(address, abi, signer) {
   return new ethers.Contract(address, abi, signer);
 }
 
 export const StakingABI = [
   {
-    'inputs': [
+    "inputs": [
       {
-        'internalType': 'address',
-        'name': '_token',
-        'type': 'address'
-      },
-      {
-        'internalType': 'uint256',
-        'name': '_unstakeTime',
-        'type': 'uint256'
-      },
-      {
-        'internalType': 'uint256',
-        'name': '_minimumStake',
-        'type': 'uint256'
+        "internalType": "address",
+        "name": "newAdmin",
+        "type": "address"
       }
     ],
-    'stateMutability': 'nonpayable',
-    'type': 'constructor'
+    "name": "addAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getDividendCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "staker",
+        "type": "address"
+      }
+    ],
+    "name": "getStake",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [
@@ -57,11 +85,63 @@ export const StakingABI = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "newAdmin",
+        "name": "account",
         "type": "address"
       }
     ],
-    "name": "removeAdmin",
+    "name": "isOwner",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minimumStake",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "postDividend",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "reinvest",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -74,258 +154,132 @@ export const StakingABI = [
         "type": "address"
       }
     ],
-    "name": "addAdmin",
+    "name": "removeAdmin",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    'inputs': [
+    "inputs": [
       {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    'name': 'dividends',
-    'outputs': [
+    "name": "stake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "stakedTPA",
+    "outputs": [
       {
-        'internalType': 'uint256',
-        'name': 'originalAmount',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "stakes",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "stake",
+        "type": "uint256"
       },
       {
-        'internalType': 'uint256',
-        'name': 'amount',
-        'type': 'uint256'
-      },
-      {
-        'internalType': 'uint256',
-        'name': 'totalStakeSnapshot',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "dividendIndex",
+        "type": "uint256"
       }
     ],
-    'stateMutability': 'view',
-    'type': 'function'
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    'inputs': [],
-    'name': 'getDividendCount',
-    'outputs': [
+    "inputs": [],
+    "name": "token",
+    "outputs": [
       {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
       }
     ],
-    'stateMutability': 'view',
-    'type': 'function'
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    'inputs': [
+    "inputs": [
       {
-        'internalType': 'address',
-        'name': 'staker',
-        'type': 'address'
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
       }
     ],
-    'name': 'getStake',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    'inputs': [
+    "inputs": [
       {
-        'internalType': 'address',
-        'name': 'account',
-        'type': 'address'
+        "internalType": "address",
+        "name": "staker",
+        "type": "address"
       }
     ],
-    'name': 'isOwner',
-    'outputs': [
+    "name": "unrealizedGains",
+    "outputs": [
       {
-        'internalType': 'bool',
-        'name': '',
-        'type': 'bool'
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    'stateMutability': 'view',
-    'type': 'function'
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    'inputs': [],
-    'name': 'minimumStake',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
+    "inputs": [],
+    "name": "unstake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    'inputs': [],
-    'name': 'owner',
-    'outputs': [
+    "inputs": [],
+    "name": "unstakeTime",
+    "outputs": [
       {
-        'internalType': 'address',
-        'name': '',
-        'type': 'address'
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    'stateMutability': 'view',
-    'type': 'function'
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'amount',
-        'type': 'uint256'
-      }
-    ],
-    'name': 'postDividend',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'reinvest',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'amount',
-        'type': 'uint256'
-      }
-    ],
-    'name': 'stake',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'stakedTPA',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'address',
-        'name': '',
-        'type': 'address'
-      }
-    ],
-    'name': 'stakes',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'stake',
-        'type': 'uint256'
-      },
-      {
-        'internalType': 'uint256',
-        'name': 'dividendIndex',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'token',
-    'outputs': [
-      {
-        'internalType': 'contract IERC20',
-        'name': '',
-        'type': 'address'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'address',
-        'name': 'newOwner',
-        'type': 'address'
-      }
-    ],
-    'name': 'transferOwnership',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'address',
-        'name': 'staker',
-        'type': 'address'
-      }
-    ],
-    'name': 'unrealizedGains',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'unstake',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'unstakeTime',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'withdrawDividends',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
+    "inputs": [],
+    "name": "withdrawDividends",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ];
 
@@ -398,19 +352,6 @@ export const TokenABI = [
     'type': 'function'
   },
   {
-    'inputs': [],
-    'name': 'totalSupply',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
     'inputs': [
       {
         'internalType': 'address',
@@ -462,5 +403,65 @@ export const TokenABI = [
     ],
     'stateMutability': 'nonpayable',
     'type': 'function'
+  }
+];
+
+export const LockerABI = [
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "releaseTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "lock",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "lockAddress",
+        "type": "address"
+      }
+    ],
+    "name": "releasable",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "unlock",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ];

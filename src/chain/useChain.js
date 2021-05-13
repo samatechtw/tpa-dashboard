@@ -1,9 +1,13 @@
 import { ethers } from 'ethers/lib.esm';
 import {  intervalToDuration } from 'date-fns';
 import { ref } from 'vue';
-import { TOKEN_CONTRACT_ADDRESS, STAKING_CONTRACT_ADDRESS } from '/src/utils/config';
+import {
+  TOKEN_CONTRACT_ADDRESS,
+  STAKING_CONTRACT_ADDRESS,
+  LOCKER_CONTRACT_ADDRESS,
+} from '/src/utils/config';
 import { TxStatus, TxType } from '/src/store';
-import { tokenContract, stakingContract } from './contracts';
+import { tokenContract, stakingContract, lockerContract } from './contracts';
 import useMetamask from './useMetamask';
 import useWalletconnect from './useWalletconnect';
 
@@ -17,6 +21,7 @@ const state = {
   signer: null,
   stakingContract: null,
   tokenContract: null,
+  lockerContract: null,
   loaded: false,
   loadCallbackList: [],
 };
@@ -61,6 +66,7 @@ export default function useChain(store, t) {
     state.signer = state.provider.getSigner();
     state.tokenContract = tokenContract(state.signer, TOKEN_CONTRACT_ADDRESS);
     state.stakingContract = stakingContract(state.signer, STAKING_CONTRACT_ADDRESS);
+    state.lockerContract = lockerContract(state.signer, LOCKER_CONTRACT_ADDRESS);
     await subscribeProvider(state.provider);
 
     chainId.value = (await state.provider.getNetwork()).chainId;
@@ -72,6 +78,7 @@ export default function useChain(store, t) {
     await getUserAdmin();
     await getUserBalance();
     await getUserStaked();
+    await getUserLocked();
     state.loadCallbackList.forEach(async cb => await cb);
   };
 
@@ -128,8 +135,12 @@ export default function useChain(store, t) {
     store.setUserStaked(staked.toString());
   };
 
+  const getUserLocked = async () => {
+    const locked = await state.lockerContract.locked(address.value);
+    store.setUserLocked(locked.toString());
+  };
+
   const getUserAllowance = async () => {
-    console.log(state);
     const allowance = await state.tokenContract.allowance(
       address.value,
       state.stakingContract.address,

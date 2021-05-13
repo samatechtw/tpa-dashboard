@@ -14,6 +14,7 @@ export const TxType = {
   UNSTAKE: 'tx.unstake',
   WITHDRAW: 'tx.withdraw',
   REINVEST: 'tx.reinvest',
+  UNLOCK: 'tx.unlock',
   FAUCET: 'tx.faucet',
   DIVIDEND: 'tx.dividend',
   ADD_ADMIN: 'tx.add_admin',
@@ -79,6 +80,7 @@ const initialState = () => ({
   timeIndex: 1,
   userTpa: 0,
   stakedTpa: 0,
+  lockedTpa: 0,
   walletName: null,
   txHistory: [],
   admin: false,
@@ -188,6 +190,9 @@ export const useStore = () => ({
   setUserStaked: (tpa) => {
     state.stakedTpa = tpa;
     updateTpaData(tpa);
+  },
+  setUserLocked: (tpa) => {
+    state.lockedTpa = tpa;
   },
   setUserAdmin: (admin) => {
     state.admin = admin;

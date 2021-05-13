@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { computed, watch, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from '/src/store';
 import { useI18n } from 'vue-i18n';
 import useChain from '/src/chain/useChain';

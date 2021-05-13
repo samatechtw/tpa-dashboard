@@ -69,6 +69,7 @@
     "approval": "Approval",
     "stake": "Stake",
     "unstake": "Unstake",
+    "unlock": "Unlock",
     "withdraw": "Withdraw",
     "reinvest": "Reinvest",
     "dividend": "Post Dividend",

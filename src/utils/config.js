@@ -5,6 +5,7 @@ export const INFURA_URL = `https://${ETH_NETWORK}.infura.io/v3/${INFURA_ID}`;
 export const TOKEN_CONTRACT_ADDRESS = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
 export const STAKING_CONTRACT_ADDRESS = import.meta.env.VITE_STAKING_CONTRACT_ADDRESS;
 export const FAUCET_CONTRACT_ADDRESS = import.meta.env.VITE_FAUCET_CONTRACT_ADDRESS;
+export const LOCKER_CONTRACT_ADDRESS = import.meta.env.VITE_LOCKER_CONTRACT_ADDRESS;
 export const PURCHASE_LINK = import.meta.env.VITE_PURCHASE_LINK;
 
 export const purchaseExternal = PURCHASE_LINK && PURCHASE_LINK.startsWith('http');
