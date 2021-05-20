@@ -463,5 +463,24 @@ export const LockerABI = [
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-  }
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "lockAddress",
+        "type": "address"
+      }
+    ],
+    "name": "locked",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
 ];

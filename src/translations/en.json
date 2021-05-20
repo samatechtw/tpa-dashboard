@@ -4,6 +4,8 @@
   "disconnect": "Disconnect Wallet",
   "no_wallet": "No Wallet Connected",
   "unstaked": "Unstaked TPA",
+  "locked": "Locked TPA",
+  "unlock": "(Unlock)",
   "stake": "Stake TPA",
   "unstake": "Unstake",
   "get": "Get more TPA",
@@ -57,6 +59,12 @@
     "title": "Unstake TPA",
     "subtitle": "Unstake your TPA. WARNING - this cannot be undone, and your unstaked TPA will be locked for {days} days. Visit this page again after {days} days to retrieve your locked TPA.",
     "staked": "Staked TPA"
+  },
+  "unlock_modal": {
+    "title": "Unlock TPA",
+    "subtitle": "Unlock your TPA. TPA can be unlocked {days} days after unstaking.",
+    "releasable": "Releasable",
+    "button": "Unlock"
   },
   "faucet": {
     "no_wallet": "Connect a wallet to access the faucet",

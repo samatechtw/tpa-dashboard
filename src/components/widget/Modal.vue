@@ -5,7 +5,7 @@
       <div class="modal-close-wrap" @click="$emit('cancel')">
         <img :src="Close">
       </div>
-      <slot />
+      <slot class="test" />
     </div>
   </div>
 </transition>
@@ -55,6 +55,14 @@ export default {
 }
 .modal-inner {
   position: relative;
+  top: -10%;
+  padding: 0 40px;
+}
+.modal-content {
+  width: 540px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 24px;
 }
 .modal-close-wrap {
   position: absolute;

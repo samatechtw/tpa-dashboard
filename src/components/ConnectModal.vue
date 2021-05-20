@@ -1,6 +1,6 @@
 <template>
 <Modal :show="show" @cancel="$emit('cancel')">
-  <div class="connect-modal">
+  <div class="connect-modal modal-content">
     <div class="connect-title">
       {{ $t('select.title') }}
     </div>
@@ -62,16 +62,7 @@ export default {
 <style lang="postcss">
 @import '/src/assets/css/global.css';
 
-.modal-inner {
-  position: relative;
-  top: -10%;
-  padding: 0 40px;
-}
 .connect-modal {
-  padding: 24px;
-  width: 540px;
-  background-color: white;
-  border-radius: 4px;
   .connect-title {
     @mixin title 18px;
   }

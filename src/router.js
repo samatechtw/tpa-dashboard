@@ -16,7 +16,7 @@ const router = createRouter({
       name: 'Faucet',
       component: Faucet,
       meta: { title: 'TPA Test Faucet' },
-    }
+    },
   ],
 });
 

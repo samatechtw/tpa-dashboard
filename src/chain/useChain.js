@@ -140,6 +140,11 @@ export default function useChain(store, t) {
     store.setUserLocked(locked.toString());
   };
 
+  const getUserReleasable = async () => {
+    const releasable = await state.lockerContract.releasable(address.value);
+    store.setUserReleasable(releasable.toString());
+  };
+
   const getUserAllowance = async () => {
     const allowance = await state.tokenContract.allowance(
       address.value,
@@ -272,6 +277,8 @@ export default function useChain(store, t) {
     getUserBalance,
     getUserAllowance,
     getUserStaked,
+    getUserLocked,
+    getUserReleasable,
     getBalance,
     submitTx,
     submitStake,

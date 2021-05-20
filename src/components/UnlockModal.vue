@@ -1,27 +1,35 @@
 <template>
 <Modal :show="show" @cancel="$emit('cancel')">
-  <div class="unstake-modal modal-content">
-    <div class="unstake-title">
-      {{ $t('unstake_modal.title') }}
+  <div class="unlock-modal modal-content">
+    <div class="unlock-title">
+      {{ $t('unlock_modal.title') }}
     </div>
-    <div class="unstake-subtitle">
-      {{ $t('unstake_modal.subtitle', { days: unstakeDays }) }}
+    <div class="unlock-subtitle">
+      {{ $t('unlock_modal.subtitle', { days: unstakeDays }) }}
     </div>
-    <div v-if="error" class="unstake-error">
+    <div v-if="error" class="unlock-error">
       {{ error }}
     </div>
-    <div class="unstake-amount-wrap">
-      <div class="unstake-amount-text">
-        {{ $t('unstake_modal.staked') }}
+    <div class="unlock-amount-wrap">
+      <div class="unlock-amount-text">
+        {{ $t('locked') }}
       </div>
-      <div class="unstake-amount">
-        {{ stakedDisplay }}
+      <div class="unlock-amount">
+        {{ lockedDisplay }}
       </div>
-      <img :src="Reload" @click="updateStaked">
     </div>
-    <div class="unstake-button-wrap">
-      <div class="unstake-button" @click="unstake">
-        <LoadingText :text="$t('unstake')" :loading="!!txState.activeUnstake" />
+    <div class="unlock-amount-wrap">
+      <div class="unlock-amount-text">
+        {{ $t('unlock_modal.releasable') }}
+      </div>
+      <div class="unlock-amount">
+        {{ releasableDisplay }}
+      </div>
+      <img :src="Reload" @click="updateReleasable">
+    </div>
+    <div class="unlock-button-wrap">
+      <div class="unlock-button" @click="unlock">
+        <LoadingText :text="$t('unlock_modal.button')" :loading="!!txState.activeUnlock" />
       </div>
     </div>
   </div>
@@ -39,7 +47,7 @@ const isTxActive = tx => (
 );
 
 export default {
-  name: 'unstake-modal',
+  name: 'unlock-modal',
   emits: ['cancel'],
   props: {
     show: Boolean,
@@ -48,11 +56,12 @@ export default {
     const { show } = toRefs(props);
     const { t } = useI18n();
     const store = useStore();
-    const { stakedTpa } = store;
+    const { lockedTpa, releasableTpa } = store;
     const {
       submitUnstake,
       getError,
-      getUserStaked,
+      getUserReleasable,
+      getUserLocked,
       toEth,
       getUnstakeDays,
     } = useChain(store, t);
@@ -60,11 +69,13 @@ export default {
     const error = ref(null);
     const unstakeDays = ref('?');
 
-    const stakedDisplay = computed(() => (
-      stakedTpa.value === null ? '?' : toEth(stakedTpa.value).toLocaleString()
+    const lockedDisplay = computed(() => toEth(lockedTpa.value).toLocaleString());
+
+    const releasableDisplay = computed(() => (
+      releasableTpa.value === null ? '?' : toEth(releasableTpa.value).toLocaleString()
     ));
 
-    const unstake = async () => {
+    const unlock = async () => {
       error.value = null;
       try {
         await submitUnstake();        
@@ -76,24 +87,25 @@ export default {
       const tx = latestTx.value;
       if(tx && isTxActive(tx) && tx.type === TxType.UNSTAKE) {
         return {
-          activeUnstake: tx.hash,
+          activeUnlock: tx.hash,
         };
       }
       return {};
     });
-    const updateStaked = async () => {
-      await getUserStaked();
-    };
     watch(show, async (newShow) => {
       if(newShow) {
         unstakeDays.value = await getUnstakeDays();
+        await getUserLocked();
+        await getUserReleasable();
       }
     });
     return {
-      stakedDisplay,
-      updateStaked,
+      lockedDisplay,
+      releasableDisplay,
+      updateLocked: getUserLocked,
+      updateReleasable: getUserReleasable,
       unstakeDays,
-      unstake,
+      unlock,
       error,
       txState,
     };
@@ -104,25 +116,25 @@ export default {
 <style lang="postcss">
 @import '/src/assets/css/global.css';
 
-.unstake-modal {
-  .unstake-title {
+.unlock-modal {
+  .unlock-title {
     @mixin title 18px;
   }
-  .unstake-subtitle {
+  .unlock-subtitle {
     @mixin text 15px;
     margin-top: 16px;
     line-height: 24px;
   }
-  .stake-error {
+  .unlock-error {
     @mixin medium 11px;
     color: $red;
     margin-top: 8px;
   }
-  .unstake-button-wrap {
+  .unlock-button-wrap {
     margin-top: 16px;
     display: flex;
   }
-  .unstake-button {
+  .unlock-button {
     @mixin title 15px;
     color: white;
     background-color: $blue;
@@ -130,14 +142,14 @@ export default {
     border-radius: 4px;
     cursor: pointer;
   }
-  .unstake-amount-wrap {
+  .unlock-amount-wrap {
     display: flex;
     margin-top: 16px;
     align-items: center;
-    .unstake-amount-text {
+    .unlock-amount-text {
       @mixin medium 15px;
     }
-    .unstake-amount {
+    .unlock-amount {
       @mixin semibold 15px;
       margin-left: 6px;
     }

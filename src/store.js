@@ -81,6 +81,7 @@ const initialState = () => ({
   userTpa: 0,
   stakedTpa: 0,
   lockedTpa: 0,
+  releasableTpa: 0,
   walletName: null,
   txHistory: [],
   admin: false,
@@ -148,8 +149,10 @@ export const useStore = () => ({
   address: computed(() => state.address),
   timeIndex: computed(() => state.timeIndex),
   userTpa: computed(() => state.userTpa),
+  lockedTpa: computed(() => state.lockedTpa),
   stakedTpa: computed(() => state.stakedTpa),
   tpaData: computed(() => [...state.tpaData]),
+  releasableTpa: computed(() => state.releasableTpa),
   walletName: computed(() => state.walletName),
   tpaWindow,
   tpaWindowFirstAmount: computed(() => {
@@ -193,6 +196,9 @@ export const useStore = () => ({
   },
   setUserLocked: (tpa) => {
     state.lockedTpa = tpa;
+  },
+  setUserReleasable: (tpa) => {
+    state.releasableTpa = tpa;
   },
   setUserAdmin: (admin) => {
     state.admin = admin;

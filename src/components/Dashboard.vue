@@ -25,11 +25,26 @@
       </div>
       <div class="dashboard-stake box">
         <div class="stake-left">
-          <div class="stake-unstaked">
-            {{ userTpaStr }}
+          <div class="stake-left-section">
+            <div class="stake-left-amount">
+              {{ userTpaStr }}
+            </div>
+            <div class="stake-left-text">
+              {{ $t('unstaked') }}
+            </div>
           </div>
-          <div class="stake-unstaked-text">
-            {{ $t('unstaked') }}
+          <div v-if="lockedTpa" class="stake-left-section">
+            <div class="stake-left-amount">
+              {{ userLockedTpaStr }}
+            </div>
+            <div class="stake-left-text">
+              <span>{{ $t('locked') }}</span>
+              <span
+                class="unlock-link"
+                @click="showUnlockModal = true"
+              >{{ $t('unlock') }}
+              </span>
+            </div>
           </div>
         </div>
         <div class="stake-right">
@@ -95,6 +110,10 @@
     :show="showUnstakeModal"
     @cancel="showUnstakeModal = false"
   />
+  <UnlockModal
+    :show="showUnlockModal"
+    @cancel="showUnlockModal = false"
+  />
 </div>
 </template>
 
@@ -121,6 +140,7 @@ export default {
       isUserAdmin,
       latestTx,
       userTpa,
+      lockedTpa,
       tpaWindow,
       timeIndex,
       initialStakedTpa,
@@ -131,6 +151,7 @@ export default {
     const { toEth } = useChain(store, t);
     const showStakeModal = ref(false);
     const showUnstakeModal = ref(false);
+    const showUnlockModal = ref(false);
 
     const userDiff = computed(() => Number(toEth(stakedTpa.value)) - initialStakedTpa.value);
     const userTotalStr = computed(() => (
@@ -145,6 +166,7 @@ export default {
     });
     const allTimeSign = computed(() => signClass(userDiff.value));
 
+    const userLockedTpaStr = computed(() => toEth(lockedTpa.value).toLocaleString());
     const userTpaStr = computed(() => toEth(userTpa.value).toLocaleString());
     const graphDiffStr = computed(() => (
       signedStr(toEth(tpaWindowLastAmount.value) - toEth(tpaWindowFirstAmount.value))
@@ -174,11 +196,14 @@ export default {
       isUserAdmin,
       showStakeModal,
       showUnstakeModal,
+      showUnlockModal,
       userTotalStr,
       userTotal: stakedTpa,
       userDiffStr,
       userPercentStr,
       userTpaStr,
+      userLockedTpaStr,
+      lockedTpa,
       allTimeSign,
       timeIndex,
       tpaWindow,
@@ -251,17 +276,25 @@ export default {
       min-width: 320px;
       margin-left: 24px;
       display: flex;
-      padding-top: 36px;
+      align-items: center;
       padding-right: 40px;
       .stake-left {
         display: flex;
         flex-direction: column;
-        .stake-unstaked {
+        .stake-left-amount {
           @mixin title 19px;
         }
-        .stake-unstaked-text {
+        .stake-left-text {
           color: $dark3;
           @mixin semibold 12px;
+          .unlock-link {
+            margin-left: 6px;
+            cursor: pointer;
+            color: $red;
+          }
+        }
+        .stake-left-section:not(:first-child) {
+          margin-top: 8px;
         }
       }
       .stake-right {

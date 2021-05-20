@@ -1,6 +1,6 @@
 <template>
 <Modal :show="show" @cancel="$emit('cancel')">
-  <div class="stake-modal">
+  <div class="stake-modal modal-content">
     <div class="stake-title">
       {{ $t('stake_modal.title') }}
     </div>
@@ -152,16 +152,7 @@ export default {
 <style lang="postcss">
 @import '/src/assets/css/global.css';
 
-.modal-inner {
-  position: relative;
-  top: -10%;
-  padding: 0 40px;
-}
 .stake-modal {
-  padding: 24px;
-  width: 540px;
-  background-color: white;
-  border-radius: 4px;
   .stake-title {
     @mixin title 18px;
   }
