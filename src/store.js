@@ -85,6 +85,7 @@ const initialState = () => ({
   walletName: null,
   txHistory: [],
   admin: false,
+  language: 'EN',
 });
 
 const saveState = (value) => {
@@ -154,6 +155,7 @@ export const useStore = () => ({
   tpaData: computed(() => [...state.tpaData]),
   releasableTpa: computed(() => state.releasableTpa),
   walletName: computed(() => state.walletName),
+  language: computed(() => state.language || 'EN'),
   tpaWindow,
   tpaWindowFirstAmount: computed(() => {
     const window = tpaWindow.value;
@@ -209,6 +211,9 @@ export const useStore = () => ({
   },
   updateLatestTx: (tx) => {
     state.txHistory[0] = tx;
+  },
+  setLanguage: (lang) => {
+    state.language = lang;
   },
   clearState: () => {
     Object.assign(state, initialState());

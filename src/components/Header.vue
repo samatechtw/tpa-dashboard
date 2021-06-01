@@ -21,6 +21,7 @@
         </div>
       </router-link>
       <div class="header-right">
+        <LanguageSelect />
         <div class="header-right-text" @click="$emit('toggle-connect')">
           <span v-if="connected" class="connected">
             {{ $t('disconnect') }}
@@ -92,6 +93,7 @@ export default {
       margin-left: auto;
       cursor: pointer;
       padding-top: 4px;
+      display: flex;
       .connected {
         color: $red;
       }
