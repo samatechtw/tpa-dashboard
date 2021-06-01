@@ -4,9 +4,20 @@
   <div class="header-content-wrap container">
     <div class="header-content">
       <router-link :to="{ name: 'Home' }">
-        <div class="header-left">
-          <img :src="Dashboard">
+        <div
+          class="header-link"
+          :class="{ active: $route.name === 'Home' }"
+        >
+          <DashboardIcon :color="$route.name === 'Home' ? '#0087cb' : '#a2a2a2'" />
           {{ $t('dashboard') }}
+        </div>
+      </router-link>
+      <router-link :to="{ name: 'Proposals' }">
+        <div
+          class="header-link"
+          :class="{ active: $route.name === 'Proposals' }"
+        >
+          {{ $t('proposals') }}
         </div>
       </router-link>
       <div class="header-right">
@@ -31,8 +42,6 @@ export default {
   props: {
     connected: Boolean,
   },
-  setup() {
-  },
 };
 </script>
 
@@ -54,28 +63,35 @@ export default {
     padding-top: 26px;
   }
   .header-content {
-    padding: 0 40px;
+    padding: 0 32px 0 16px;
     display: flex;
     align-items: center;
     background-color: white;
     height: 72px;
     border-radius: 4px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    .header-left {
+    .header-link {
       @mixin medium 16px;
       pointer-events: none;
       display: flex;
       align-items: baseline;
-      color: $blue;
-      img {
+      color: $text-light;
+      margin-left: 24px;
+      padding-top: 4px;
+      svg {
         width: 13px;
         margin-right: 8px;
+      }
+      &.active {
+        color: $blue;
+        border-bottom: 1px solid $blue;
       }
     }
     .header-right {
       @mixin semibold 16px;
       margin-left: auto;
       cursor: pointer;
+      padding-top: 4px;
       .connected {
         color: $red;
       }

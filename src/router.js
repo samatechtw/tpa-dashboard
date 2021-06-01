@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '/src/views/Home.vue';
+import ProposalsPage from '/src/views/ProposalsPage.vue';
 import Faucet from '/src/views/Faucet.vue';
 
 const router = createRouter({
@@ -10,6 +11,12 @@ const router = createRouter({
       name: 'Home',
       component: Home,
       meta: { title: 'TPA Dashboard' },
+    },
+    {
+      path: '/proposals',
+      name: 'Proposals',
+      component: ProposalsPage,
+      meta: { title: 'Proposals' },
     },
     {
       path: '/get',

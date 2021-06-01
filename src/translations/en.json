@@ -1,5 +1,6 @@
 {
   "dashboard": "Dashboard",
+  "proposals": "Proposals",
   "connect": "Connect Wallet",
   "disconnect": "Disconnect Wallet",
   "no_wallet": "No Wallet Connected",

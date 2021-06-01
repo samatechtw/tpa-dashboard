@@ -34,9 +34,8 @@
   "homepage": "https://github.com/samatech/tpa-dashboard#readme",
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
-    "@walletconnect/web3-provider": "../lib/web3-provider",
     "date-fns": "^2.21.3",
-    "ethers": "^5.1.4",
+    "ethers": "^5.3.0",
     "vue": "^3.0.11",
     "vue-i18n": "^9.1.6",
     "vue-router": "^4.0.8",
@@ -44,13 +43,13 @@
   },
   "devDependencies": {
     "@intlify/eslint-plugin-vue-i18n": "^0.11.1",
-    "@vitejs/plugin-vue": "^1.2.2",
+    "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "^3.0.11",
     "autoprefixer": "^10.2.5",
-    "eslint": "^7.26.0",
-    "eslint-plugin-import": "^2.23.2",
-    "eslint-plugin-vue": "^7.9.0",
-    "postcss": "^8.2.15",
+    "eslint": "^7.27.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-vue": "^7.10.0",
+    "postcss": "^8.3.0",
     "postcss-import": "^14.0.2",
     "postcss-mixins": "^8.0.0",
     "postcss-modules": "^4.0.0",
@@ -58,8 +57,8 @@
     "postcss-simple-vars": "^6.0.3",
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^22.0.0",
-    "vite": "^2.3.3",
-    "vite-plugin-components": "^0.9.1",
+    "vite": "^2.3.5",
+    "vite-plugin-components": "^0.10.4",
     "vite-plugin-vue-images": "^0.6.1"
   }
 }
