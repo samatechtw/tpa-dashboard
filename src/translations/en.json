@@ -1,6 +1,5 @@
 {
   "dashboard": "Dashboard",
-  "proposals": "Proposals",
   "connect": "Connect Wallet",
   "disconnect": "Disconnect Wallet",
   "no_wallet": "No Wallet Connected",
@@ -91,6 +90,32 @@
     "title": "Recent Transaction:",
     "faucet": "Faucet Request",
     "time": "({time} ago)"
+  },
+  "proposals": {
+    "title": "Proposals",
+    "create": "+ Create New proposal",
+    "create_title": "Feature not available",
+    "create_text": "This page is for demonstration purposes. Proposal creation is not available yet.",
+    "back": "Back to Proposals",
+    "header_default": "tpa.finance",
+    "address": "By {address}",
+    "start": "start {date}",
+    "end": "end {date}",
+    "not_found": "Proposal not found",
+    "author": "Author",
+    "filters": [
+      "All",
+      "Core",
+      "Community",
+      "Active",
+      "Pending",
+      "Closed"
+    ]
+  },
+  "comments": {
+    "count": "{n} Comment | {n} Comments",
+    "enter": "Enter Comment",
+    "connect": "Connect your wallet to post a comment"
   },
   "admin": {
     "title": "TPA Admin",

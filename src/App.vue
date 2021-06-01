@@ -69,6 +69,14 @@ a {
   height: 100%;
 }
 
+.tpa-empty {
+  width: 100%;
+  flex-grow: 1;
+  @mixin flex-center;
+  @mixin medium 16px;
+  color: $text-light;
+}
+
 .container {
   max-width: 1100px;
   box-sizing: border-box;
@@ -90,6 +98,13 @@ a {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 
 </style>

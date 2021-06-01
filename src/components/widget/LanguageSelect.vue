@@ -21,7 +21,6 @@ import IcKo from '/src/assets/img/ic_ko.svg';
 export default {
   setup() {
     const { language, setLanguage } = useStore();
-    console.log('LANGUAGE', language.value);
     return {
       language,
       setLanguage,

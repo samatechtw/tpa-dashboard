@@ -56,19 +56,9 @@ export default {
 <style lang="postcss">
 @import '/src/assets/css/global.css';
 
-.home-wrap {
-  .dashboard-empty {
-    width: 100%;
-    flex-grow: 1;
-    @mixin flex-center;
-    @mixin medium 16px;
-    color: $text-light;
-  }
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 0.3s ease;
-  }
-  .fade-enter-from, .fade-leave-to {
-    opacity: 0;
-  }
+.proposals-wrap {
+  background-color: $grey1;
+  padding-bottom: 80px;
+  min-height: 100%;
 }
 </style>

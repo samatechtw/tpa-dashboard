@@ -15,9 +15,9 @@
       <router-link :to="{ name: 'Proposals' }">
         <div
           class="header-link"
-          :class="{ active: $route.name === 'Proposals' }"
+          :class="{ active: $route.name.startsWith('Proposal') }"
         >
-          {{ $t('proposals') }}
+          {{ $t('proposals.title') }}
         </div>
       </router-link>
       <div class="header-right">

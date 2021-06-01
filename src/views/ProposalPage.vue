@@ -1,18 +1,20 @@
 <template>
-<div class="home-wrap">
+<div class="proposal-wrap">
   <Header
     :connected="!!address"
     @toggle-connect="showConnectModal"
   />
+  <ProposalsHeader :showBack="true" />
   <transition name="fade" mode="out-in">
-    <Dashboard v-if="address" />
-    <div v-else-if="loadingAccount" class="tpa-empty">
-      <Spinner />
+    <Proposal v-if="proposal" :proposal="proposal" />
+    <div v-else-if="notFound" class="tpa-empty">
+      {{ $t('proposals.not_found') }}
     </div>
     <div v-else class="tpa-empty">
-      {{ $t('no_wallet') }}
+      <Spinner />
     </div>
   </transition>
+  <Proposal />
   <ConnectModal
     :show="showConnect"
     :error="connectError"
@@ -23,14 +25,16 @@
 </template>
 
 <script>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useStore } from '/src/store';
 import useChain from '/src/chain/useChain';
+import { getProposal } from '/src/utils/api';
 
 export default {
-  name: 'home',
   setup() {
+    const route = useRoute();
     const store = useStore();
     const { t } = useI18n();
     const { address } = store;
@@ -43,7 +47,15 @@ export default {
       loadingAccount,
     } = useChain(store, t);
 
+    const proposal = ref(null);
+    const notFound = ref(false);
+
     onMounted(async () => {
+      const id = parseInt(route.params.id);
+      proposal.value = getProposal(id);
+      if(!proposal.value) {
+        notFound.value = true;
+      }
       if(address.value) {
         await reconnectWallet();
       }
@@ -56,7 +68,19 @@ export default {
       connectWallet,
       showConnectModal,
       showConnect,
+      notFound,
+      proposal,
     };
   },
 };
 </script>
+
+<style lang="postcss">
+@import '/src/assets/css/global.css';
+
+.proposal-wrap {
+  background-color: $grey1;
+  padding-bottom: 80px;
+  min-height: 100%;
+}
+</style>
