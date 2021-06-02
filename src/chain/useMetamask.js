@@ -5,6 +5,10 @@ export default function useMetamask(t) {
   const getProvider = async () => {
     const provider = await detectEthereumProvider();
     if(provider) {
+
+      provider.on('networkChanged', async (_networkId) => {
+        location.reload();
+      });
       return provider;
     } else {
       throw new Error(t('errors.no_metamask'));

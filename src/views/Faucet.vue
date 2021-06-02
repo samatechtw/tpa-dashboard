@@ -88,7 +88,6 @@ export default {
       latestTx,
     } = store;
     const {
-      showConnectModal,
       getSigner,
       loadingAccount,
       getBalance,
@@ -133,11 +132,16 @@ export default {
         await updateFaucetBalance();
       }
     });
+    onMounted(async () => {
+      if(walletConnected.value && !faucetContract) {
+        faucetContract = getContract(FAUCET_CONTRACT_ADDRESS, FaucetAbi, getSigner());
+        await updateFaucetBalance();
+      }
+    });
     return {
       error,
       loadingAccount,
       walletConnected,
-      showConnectModal,
       balance,
       faucetBalance,
       faucetRequest,

@@ -3,6 +3,7 @@ import Big from 'big.js';
 import {  intervalToDuration } from 'date-fns';
 import { ref } from 'vue';
 import {
+  ETH_CHAIN_ID,
   TOKEN_CONTRACT_ADDRESS,
   STAKING_CONTRACT_ADDRESS,
   LOCKER_CONTRACT_ADDRESS,
@@ -31,19 +32,12 @@ const chainId = ref(null);
 const loadingAccount = ref(false);
 const showConnect = ref(false);
 const walletConnected = ref(false);
+const wrongNetwork = ref(false);
 const walletSource = ref(null);
 const connectError = ref(null);
 
 export default function useChain(store, t) {
   const { address, addTx } = store;
-
-  const showConnectModal = () => {
-    if(store.address.value) {
-      disconnectWallet();
-    } else {
-      showConnect.value = true;
-    }
-  };
 
   const onLoad = async (callback) => {
     if(state.loaded) {
@@ -64,6 +58,7 @@ export default function useChain(store, t) {
   };
 
   const setupProvider = async (walletProvider) => {
+    wrongNetwork.value = false;
     state.provider = chainInit(walletProvider);
     state.signer = state.provider.getSigner();
     state.tokenContract = tokenContract(state.signer, TOKEN_CONTRACT_ADDRESS);
@@ -71,9 +66,13 @@ export default function useChain(store, t) {
     state.lockerContract = lockerContract(state.signer, LOCKER_CONTRACT_ADDRESS);
     await subscribeProvider(state.provider);
 
-    chainId.value = (await state.provider.getNetwork()).chainId;
-    console.log('Network/chain ID:', chainId.value);
-    return state.signer.getAddress();
+    const network = await state.provider.getNetwork();
+    chainId.value = network.chainId;
+    if(chainId.value.toString() !== ETH_CHAIN_ID) {
+      wrongNetwork.value = true;
+      return false;
+    }
+    return true;
   };
 
   const getUserInfo = async () => {
@@ -88,9 +87,10 @@ export default function useChain(store, t) {
     loadingAccount.value = true;
     try {
       const walletProvider = await setupWallet(store.walletName.value);
-      await setupProvider(walletProvider);
-      await getUserInfo();
-      walletConnected.value = true;
+      if(await setupProvider(walletProvider)) {
+        await getUserInfo();
+        walletConnected.value = true;
+      }
     } catch(e) {
       console.log('Fail to reconnect', e);
       disconnect();
@@ -105,11 +105,12 @@ export default function useChain(store, t) {
     try {
       const walletProvider = await setupWallet(walletName);
       await walletSource.value.connectWallet(walletProvider);
-      const address = await setupProvider(walletProvider);
-      showConnect.value = false;
-      store.setAddress(address);
-      await getUserInfo();
-      walletConnected.value = true;
+      if(await setupProvider(walletProvider)) {
+        showConnect.value = false;
+        store.setAddress(await state.signer.getAddress());
+        await getUserInfo();
+        walletConnected.value = true;
+      }
     } catch(error) {
       connectError.value = error.message;
     } finally {
@@ -120,6 +121,7 @@ export default function useChain(store, t) {
   const disconnect = () => {
     state.provider = null;
     walletConnected.value = false;
+    wrongNetwork.value = false;
     store.clearState();
   };
 
@@ -261,13 +263,8 @@ export default function useChain(store, t) {
       await getUserInfo();
     });
     provider.on('chainChanged', async (chainId) => {
+      console.log('CHAIN CHANGE', _networkId);
       chainId.value = chainId;
-      await getUserInfo();
-    });
-
-    provider.on('networkChanged', async (_networkId) => {
-      const network = await provider.value.getNetwork();
-      chainId.value = network.chainId();
       await getUserInfo();
     });
   };
@@ -276,11 +273,11 @@ export default function useChain(store, t) {
     onLoad,
     loadingAccount,
     showConnect,
-    showConnectModal,
     connectError,
     connectWallet,
     reconnectWallet,
     walletConnected,
+    wrongNetwork,
     disconnectWallet,
     getUserAdmin,
     getUnstakeDays,

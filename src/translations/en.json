@@ -3,6 +3,7 @@
   "connect": "Connect Wallet",
   "disconnect": "Disconnect Wallet",
   "no_wallet": "No Wallet Connected",
+  "wrong_network": "Invalid network detected. Please connect to {network}",
   "unstaked": "Unstaked TPA",
   "locked": "Locked TPA",
   "unlock": "(Unlock)",

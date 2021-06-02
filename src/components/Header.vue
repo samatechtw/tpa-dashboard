@@ -47,7 +47,15 @@ export default {
     const store = useStore();
     const { t } = useI18n();
     const { address } = store;
-    const { showConnectModal } = useChain(store, t);
+    const { showConnect, disconnectWallet } = useChain(store, t);
+
+    const showConnectModal = () => {
+      if(address.value) {
+        disconnectWallet();
+      } else {
+        showConnect.value = true;
+      }
+    };
     
     return {
       address,
