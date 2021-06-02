@@ -148,14 +148,14 @@ export default {
       tpaWindowFirstAmount,
       tpaWindowLastAmount,
     } = store;
-    const { toEth } = useChain(store, t);
+    const { toEth, toEthDisplay } = useChain(store, t);
     const showStakeModal = ref(false);
     const showUnstakeModal = ref(false);
     const showUnlockModal = ref(false);
 
     const userDiff = computed(() => Number(toEth(stakedTpa.value)) - initialStakedTpa.value);
     const userTotalStr = computed(() => (
-      toEth(stakedTpa.value).toLocaleString()
+      toEthDisplay(stakedTpa.value)
     ));
     const userDiffStr = computed(() => signedStr(userDiff.value));
     const userPercentStr = computed(() => {
@@ -166,8 +166,8 @@ export default {
     });
     const allTimeSign = computed(() => signClass(userDiff.value));
 
-    const userLockedTpaStr = computed(() => toEth(lockedTpa.value).toLocaleString());
-    const userTpaStr = computed(() => toEth(userTpa.value).toLocaleString());
+    const userLockedTpaStr = computed(() => toEthDisplay(lockedTpa.value));
+    const userTpaStr = computed(() => toEthDisplay(userTpa.value));
     const graphDiffStr = computed(() => (
       signedStr(toEth(tpaWindowLastAmount.value) - toEth(tpaWindowFirstAmount.value))
     ));

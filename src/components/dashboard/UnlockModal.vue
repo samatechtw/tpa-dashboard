@@ -62,17 +62,17 @@ export default {
       getError,
       getUserReleasable,
       getUserLocked,
-      toEth,
+      toEthDisplay,
       getUnstakeDays,
     } = useChain(store, t);
     const { latestTx } = store;
     const error = ref(null);
     const unstakeDays = ref('?');
 
-    const lockedDisplay = computed(() => toEth(lockedTpa.value).toLocaleString());
+    const lockedDisplay = computed(() => toEthDisplay(lockedTpa.value));
 
     const releasableDisplay = computed(() => (
-      releasableTpa.value === null ? '?' : toEth(releasableTpa.value).toLocaleString()
+      releasableTpa.value === null ? '?' : toEthDisplay(releasableTpa.value)
     ));
 
     const unlock = async () => {

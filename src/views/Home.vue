@@ -1,11 +1,8 @@
 <template>
 <div class="home-wrap">
-  <Header
-    :connected="!!address"
-    @toggle-connect="showConnectModal"
-  />
+  <Header />
   <transition name="fade" mode="out-in">
-    <Dashboard v-if="address" />
+    <Dashboard v-if="walletConnected" />
     <div v-else-if="loadingAccount" class="tpa-empty">
       <Spinner />
     </div>
@@ -13,17 +10,11 @@
       {{ $t('no_wallet') }}
     </div>
   </transition>
-  <ConnectModal
-    :show="showConnect"
-    :error="connectError"
-    @cancel="showConnect = false"
-    @connect="connectWallet"
-  />
+  <ConnectModal />
 </div>
 </template>
 
 <script>
-import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from '/src/store';
 import useChain from '/src/chain/useChain';
@@ -33,29 +24,11 @@ export default {
   setup() {
     const store = useStore();
     const { t } = useI18n();
-    const { address } = store;
-    const {
-      connectError,
-      connectWallet,
-      reconnectWallet,
-      showConnect,
-      showConnectModal,
-      loadingAccount,
-    } = useChain(store, t);
-
-    onMounted(async () => {
-      if(address.value) {
-        await reconnectWallet();
-      }
-    });
+    const { loadingAccount, walletConnected } = useChain(store, t);
     
     return {
-      connectError,
       loadingAccount,
-      address,
-      connectWallet,
-      showConnectModal,
-      showConnect,
+      walletConnected
     };
   },
 };

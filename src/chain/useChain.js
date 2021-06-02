@@ -1,4 +1,5 @@
 import { ethers } from 'ethers/lib.esm';
+import Big from 'big.js';
 import {  intervalToDuration } from 'date-fns';
 import { ref } from 'vue';
 import {
@@ -29,6 +30,7 @@ const state = {
 const chainId = ref(null);
 const loadingAccount = ref(false);
 const showConnect = ref(false);
+const walletConnected = ref(false);
 const walletSource = ref(null);
 const connectError = ref(null);
 
@@ -88,6 +90,7 @@ export default function useChain(store, t) {
       const walletProvider = await setupWallet(store.walletName.value);
       await setupProvider(walletProvider);
       await getUserInfo();
+      walletConnected.value = true;
     } catch(e) {
       console.log('Fail to reconnect', e);
       disconnect();
@@ -106,6 +109,7 @@ export default function useChain(store, t) {
       showConnect.value = false;
       store.setAddress(address);
       await getUserInfo();
+      walletConnected.value = true;
     } catch(error) {
       connectError.value = error.message;
     } finally {
@@ -115,6 +119,7 @@ export default function useChain(store, t) {
 
   const disconnect = () => {
     state.provider = null;
+    walletConnected.value = false;
     store.clearState();
   };
 
@@ -232,12 +237,15 @@ export default function useChain(store, t) {
   );
 
   const toEth = (val) => {
-    const wei = BigInt(val.toString());
-    return wei / 1000000000000000000n;
+    let wei = Big(val.toString());
+    return wei.div(Big('1000000000000000000')).toNumber();
   };
+  const toEthDisplay = (val) => (
+    toEth(val).toLocaleString()
+  );
   const toWei = (val) => {
-    const eth = BigInt(val.toString());
-    return eth * 1000000000000000000n;
+    const eth = Big(val.toString());
+    return eth.times(Big('1000000000000000000')).toString();
   };
 
   const getSigner = () => state.signer;
@@ -269,8 +277,10 @@ export default function useChain(store, t) {
     loadingAccount,
     showConnect,
     showConnectModal,
+    connectError,
     connectWallet,
     reconnectWallet,
+    walletConnected,
     disconnectWallet,
     getUserAdmin,
     getUnstakeDays,
@@ -291,6 +301,7 @@ export default function useChain(store, t) {
     getSigner,
     getError,
     toEth,
+    toEthDisplay,
     toWei,
   };
 };

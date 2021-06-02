@@ -4,8 +4,8 @@
   "description": "TPA Staking Dashboard",
   "private": true,
   "engines": {
-    "node": ">=12.20.0",
-    "npm": ">=6.14.8"
+    "node": ">=16.2.0",
+    "npm": ">=7.15.1"
   },
   "scripts": {
     "dev": "vite",
@@ -34,6 +34,7 @@
   "homepage": "https://github.com/samatech/tpa-dashboard#readme",
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
+    "big.js": "^6.1.1",
     "date-fns": "^2.21.3",
     "ethers": "^5.3.0",
     "vue": "^3.0.11",

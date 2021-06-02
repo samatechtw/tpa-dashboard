@@ -1,11 +1,8 @@
 <template>
 <div class="home-wrap">
-  <Header
-    :connected="!!address"
-    @toggle-connect="showConnectModal"
-  />
+  <Header />
   <transition name="fade" mode="out-in">
-    <div v-if="address" class="faucet container">
+    <div v-if="walletConnected" class="faucet container">
       <RecentTx :tx="latestTxData" />
       <div class="faucet-top">
         <div class="faucet-box box">
@@ -27,24 +24,19 @@
         </div>
       </div>
     </div>
-    <div v-else-if="loadingAccount" class="dashboard-empty">
+    <div v-else-if="loadingAccount" class="tpa-empty">
       <Spinner />
     </div>
-    <div v-else class="dashboard-empty">
+    <div v-else class="tpa-empty">
       {{ $t('faucet.no_wallet') }}
     </div>
   </transition>
-  <ConnectModal
-    :show="showConnect"
-    :error="connectError"
-    @cancel="showConnect = false"
-    @connect="connectWallet"
-  />
+  <ConnectModal />
 </div>
 </template>
 
 <script>
-import { watch, ref, onMounted, computed } from 'vue';
+import { watch, ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   PURCHASE_LINK,
@@ -92,15 +84,10 @@ export default {
     let faucetContract = null;
     const error = ref(null);
     const {
-      address,
       userTpa,
       latestTx,
     } = store;
     const {
-      connectError,
-      connectWallet,
-      reconnectWallet,
-      showConnect,
       showConnectModal,
       getSigner,
       loadingAccount,
@@ -108,15 +95,16 @@ export default {
       getUserBalance,
       submitTx,
       getError,
-      toEth,
+      toEthDisplay,
+      walletConnected,
     } = useChain(store, t);
 
     const updateFaucetBalance = async () => {
       const val = await getBalance(FAUCET_CONTRACT_ADDRESS);
-      faucetBalance.value = toEth(val).toLocaleString();
+      faucetBalance.value = toEthDisplay(val);
     };
     const balance = computed(() => (
-      toEth(userTpa.value).toLocaleString()
+      toEthDisplay(userTpa.value)
     ));
     const faucetRequest = async () => {
       requestLoading.value = true;
@@ -139,28 +127,17 @@ export default {
       return null;
     });
 
-    watch(address, async (newAddr) => {
-      if(newAddr) {
-        await updateFaucetBalance();
-        faucetContract = getContract(FAUCET_CONTRACT_ADDRESS, FaucetAbi, getSigner());
-      }
-    });
-
-    onMounted(async () => {
-      if(address.value) {
-        await reconnectWallet();
+    watch(walletConnected, async (connected) => {
+      if(connected) {
         faucetContract = getContract(FAUCET_CONTRACT_ADDRESS, FaucetAbi, getSigner());
         await updateFaucetBalance();
       }
     });
     return {
       error,
-      connectError,
       loadingAccount,
-      address,
-      connectWallet,
+      walletConnected,
       showConnectModal,
-      showConnect,
       balance,
       faucetBalance,
       faucetRequest,

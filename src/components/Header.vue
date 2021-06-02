@@ -22,8 +22,8 @@
       </router-link>
       <div class="header-right">
         <LanguageSelect />
-        <div class="header-right-text" @click="$emit('toggle-connect')">
-          <span v-if="connected" class="connected">
+        <div class="header-right-text" @click="showConnectModal">
+          <span v-if="!!address" class="connected">
             {{ $t('disconnect') }}
           </span>
           <span v-else>
@@ -37,12 +37,23 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
+import { useStore } from '/src/store';
+import useChain from '/src/chain/useChain';
+
 export default {
   name: 'tpa-header',
-  emits: ['toggle-connect'],
-  props: {
-    connected: Boolean,
-  },
+  setup() {
+    const store = useStore();
+    const { t } = useI18n();
+    const { address } = store;
+    const { showConnectModal } = useChain(store, t);
+    
+    return {
+      address,
+      showConnectModal,
+    };
+  }
 };
 </script>
 

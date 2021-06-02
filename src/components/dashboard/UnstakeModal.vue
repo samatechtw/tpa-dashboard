@@ -53,7 +53,7 @@ export default {
       submitUnstake,
       getError,
       getUserStaked,
-      toEth,
+      toEthDisplay,
       getUnstakeDays,
     } = useChain(store, t);
     const { latestTx } = store;
@@ -61,7 +61,7 @@ export default {
     const unstakeDays = ref('?');
 
     const stakedDisplay = computed(() => (
-      stakedTpa.value === null ? '?' : toEth(stakedTpa.value).toLocaleString()
+      stakedTpa.value === null ? '?' : toEthDisplay(stakedTpa.value)
     ));
 
     const unstake = async () => {

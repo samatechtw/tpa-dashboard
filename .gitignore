@@ -20,6 +20,8 @@ __pycache__
 *.sqlite3
 
 *.env
+.env.stage
+.env.prod
 
 # IDE
 .vscode/

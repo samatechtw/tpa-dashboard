@@ -1,5 +1,5 @@
 <template>
-<Modal :show="show" @cancel="$emit('cancel')">
+<Modal :show="showConnect" @cancel="$emit('cancel')">
   <div class="connect-modal modal-content">
     <div class="connect-title">
       {{ $t('select.title') }}
@@ -25,11 +25,11 @@
         <div>{{ $t('select.walletconnect') }}</div>
       </div>
     </div>
-    <div v-if="error" class="connect-error">
-      {{ error }}
+    <div v-if="connectError" class="connect-error">
+      {{ connectError }}
     </div>
     <div class="connect-button-wrap">
-      <div class="connect-button" @click="$emit('connect', selected)">
+      <div class="connect-button" @click="connectWallet(selected)">
         {{ $t('select.connect') }}
       </div>
     </div>
@@ -38,21 +38,37 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useStore } from '/src/store';
+import useChain from '/src/chain/useChain';
 
 export default {
   name: 'connect-modal',
-  emits: ['cancel', 'connect'],
-  props: {
-    show: Boolean,
-    error: {
-      type: String,
-      default: null,
-    },
-  },
+  emits: ['cancel'],
   setup() {
+    const store = useStore();
+    const { t } = useI18n();
+    const { address } = store;
+    const {
+      connectError,
+      connectWallet,
+      reconnectWallet,
+      showConnect,
+    } = useChain(store, t);
     const selected = ref('metamask');
+
+    onBeforeMount(async () => {
+      if(address.value) {
+        await reconnectWallet();
+      }
+    });
+    
     return {
+      connectError,
+      address,
+      connectWallet,
+      showConnect,
       selected,
     };
   },
