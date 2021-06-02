@@ -39,6 +39,28 @@ const user4 = {
   image: '/avatar1.png',
 };
 
+const user5 = {
+  address: '',
+  name: 'Jusemee',
+  image: '/avatar2.png',
+};
+
+const user6 = {
+  address: '',
+  name: 'Skeedbop',
+  image: '/avatar3.png',
+};
+
+const comment1 = {
+  author: user5,
+  text: 'At what point are we able to give our thoughts on the proposal being drafted? It would be great if the community could offer thoughts on the proposal before it is put up for a vote, especially after the controversy around TPA 57.'
+};
+
+const comment2 = {
+  author: user6,
+  text: 'I propose to bundle multisig rotation with this proposal. While I’m happy with the participation rate of everyone, you can vividly see on the chart below that it’s been mostly me and <b>@jusemee</b> preparing and executing transactions.<br><br>I’d like to see broader representation of the wider community on multisig. There are at least two groups which often need to submit transactions to the DAO which I think need to be represented more, Strategists and Core Devs. So far their solution has been to create a Dev multisig and Strategist multisig. This is a part of the upcoming proposal which gives wider autonomy to the different groups formed while building TPA.'
+};
+
 const proposals = [
   {
     id: 1,
@@ -50,6 +72,7 @@ const proposals = [
     author: user1,
     start: parse('2021-02-19', FMT, new Date()),
     end: parse('2021-02-24', FMT, new Date()),
+    comments: [comment1, comment2],
   },
   {
     id: 2,
@@ -61,6 +84,7 @@ const proposals = [
     author: user2,
     start: parse('2021-02-19', FMT, new Date()),
     end: parse('2021-02-24', FMT, new Date()),
+    comments: [comment1],
   },
   {
     id: 3,
@@ -72,17 +96,31 @@ const proposals = [
     author: user3,
     start: parse('2021-02-19', FMT, new Date()),
     end: parse('2021-02-24', FMT, new Date()),
+    comments: [comment1],
   },
   {
     id: 4,
     label: '#ODINjau',
     title: 'TPA-56: Buyback and Build TPA',
     description,
-    type: 'Core',
-    status: 'Closed',
+    type: 'Community',
+    status: 'Pending',
     author: user4,
     start: parse('2021-02-19', FMT, new Date()),
     end: parse('2021-02-24', FMT, new Date()),
+    comments: [comment1],
+  },
+  {
+    id: 5,
+    label: '#tFFtrKu',
+    title: 'TPA-55: Extend Pool Capabilities',
+    description,
+    type: 'Community',
+    status: 'Active',
+    author: user4,
+    start: parse('2021-02-19', FMT, new Date()),
+    end: parse('2021-02-24', FMT, new Date()),
+    comments: [comment1],
   },
 ];
 

@@ -1,5 +1,5 @@
 <template>
-<Modal :show="showConnect" @cancel="$emit('cancel')">
+<Modal :show="showConnect" @cancel="showConnect = false">
   <div class="connect-modal modal-content">
     <div class="connect-title">
       {{ $t('select.title') }}
@@ -45,7 +45,6 @@ import useChain from '/src/chain/useChain';
 
 export default {
   name: 'connect-modal',
-  emits: ['cancel'],
   setup() {
     const store = useStore();
     const { t } = useI18n();

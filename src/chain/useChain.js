@@ -13,6 +13,8 @@ import { tokenContract, stakingContract, lockerContract } from './contracts';
 import useMetamask from './useMetamask';
 import useWalletconnect from './useWalletconnect';
 
+Big.PE = 1000;
+
 function chainInit(provider) {
   return new ethers.providers.Web3Provider(provider);
 }

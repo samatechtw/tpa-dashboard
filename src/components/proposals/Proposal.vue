@@ -45,7 +45,8 @@ export default {
     padding-top: 32px;
   }
   .proposal-author {
-    min-width: 160px;
+    min-width: 140px;
+    margin-right: 16px;
     display: flex;
     @mixin semibold 15px;
     color: $dark2;

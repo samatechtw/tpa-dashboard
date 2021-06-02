@@ -3,7 +3,10 @@
   <Header />
   <ProposalsHeader :showBack="true" />
   <transition name="fade" mode="out-in">
-    <Proposal v-if="proposal" :proposal="proposal" />
+    <div v-if="proposal">
+      <Proposal :proposal="proposal" />
+      <Comments :comments="proposal.comments" />
+    </div>
     <div v-else-if="notFound" class="tpa-empty">
       {{ $t('proposals.not_found') }}
     </div>
@@ -11,7 +14,6 @@
       <Spinner />
     </div>
   </transition>
-  <Proposal />
   <ConnectModal />
 </div>
 </template>

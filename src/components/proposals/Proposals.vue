@@ -35,6 +35,9 @@
       <div class="proposal-address">
         {{ $t('proposals.address', { address: proposalAddress(proposal.author.address) }) }}
       </div>
+      <div class="proposal-type">
+        {{ proposal.type }}
+      </div>
       <div class="proposal-start">
         {{ $t('proposals.start', { date: proposalDate(proposal.start) }) }}
       </div>
@@ -85,6 +88,7 @@ export default {
 @import '/src/assets/css/global.css';
 
 .proposals {
+  min-height: 400px;
   .proposals-title {
     @mixin title 26px;
     color: $dark3;
@@ -100,7 +104,6 @@ export default {
     padding: 19px 0 16px 8px;
     background-color: white;
     border: 1px solid $border1;
-    border-bottom: none;
   }
   .proposals-filter {
     cursor: pointer;
@@ -131,12 +134,26 @@ export default {
       background-color: $blue;
       margin-top: 2px;
       letter-spacing: 0.55px;
+      &.Pending {
+        background-color: $orange;
+      }
+      &.Active {
+        background-color: $green;
+      }
     }
     .proposal-title {
       @mixin title 18px;
       color: black;
       margin-left: 8px;
     }
+  }
+  .proposal-type {
+    @mixin semibold 8px;
+    @mixin flex-center;
+    color: $text-light;
+    border: 1px solid $text-light;
+    padding: 3px 6px 2px;
+    border-radius: 8.5px;
   }
   .proposal:hover {
     background-color: $border1;
