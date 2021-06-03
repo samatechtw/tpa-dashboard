@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '/src/views/Home.vue';
 import ProposalsPage from '/src/views/ProposalsPage.vue';
 import ProposalPage from '/src/views/ProposalPage.vue';
+import PoolsPage from '/src/views/PoolsPage.vue';
+import PoolPage from '/src/views/PoolPage.vue';
 import Faucet from '/src/views/Faucet.vue';
 
 const router = createRouter({
@@ -24,6 +26,18 @@ const router = createRouter({
       name: 'Proposal',
       component: ProposalPage,
       meta: { title: 'Proposal' },
+    },
+    {
+      path: '/pools',
+      name: 'Pools',
+      component: PoolsPage,
+      meta: { title: 'Pools' },
+    },
+    {
+      path: '/pools/:id(\\d+)',
+      name: 'Pool',
+      component: PoolPage,
+      meta: { title: 'Pool' },
     },
     {
       path: '/get',

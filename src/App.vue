@@ -69,6 +69,15 @@ a {
   height: 100%;
 }
 
+.blue-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 400px;
+  background-color: $blue;
+}
+
 .tpa-empty {
   width: 100%;
   flex-grow: 1;

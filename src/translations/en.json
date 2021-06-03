@@ -118,6 +118,12 @@
     "enter": "Enter Comment",
     "connect": "Connect your wallet to post a comment"
   },
+  "pools": {
+    "title": "Pools",
+    "list": "TPA Pool List",
+    "yearly": "Yearly Growth:",
+    "available": "Available to deposit:"
+  },
   "admin": {
     "title": "TPA Admin",
     "approve": "Approve Dividend",

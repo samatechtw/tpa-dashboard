@@ -20,6 +20,14 @@
           {{ $t('proposals.title') }}
         </div>
       </router-link>
+      <router-link :to="{ name: 'Pools' }">
+        <div
+          class="header-link"
+          :class="{ active: $route.name.startsWith('Pool') }"
+        >
+          {{ $t('pools.title') }}
+        </div>
+      </router-link>
       <div class="header-right">
         <LanguageSelect />
         <div class="header-right-text" @click="showConnectModal">
@@ -70,6 +78,7 @@ export default {
 
 .header {
   position: relative;
+  z-index: 2;
   .header-blue {
     position: absolute;
     top: 0;

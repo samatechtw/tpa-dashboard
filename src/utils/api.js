@@ -134,3 +134,84 @@ export function getProposals(filter) {
 export function getProposal(id) {
   return proposals.find(p => p.id === id);
 }
+
+const pools = [
+  {
+    id: 1,
+    image: '/dai.png',
+    tokens: ['cDAI', 'cUSDC'],
+    deposit: ['cDAI', 'cUSDC'],
+    receive: ['TPA'],
+    name: 'tpa.finance/Compound_LP',
+    growth: '24.72%',
+    available: '0.00',
+    apy: '242.0%',
+    total_staked: '11,875.191',
+    tvl: '1,034.259',
+    price: '0.002',
+  },
+  {
+    id: 2,
+    image: '/eurs.png',
+    tokens: ['EURS', 'sEUR'],
+    deposit: ['eursTPA'],
+    receive: ['TPA'],
+    name: 'tpa.finance/eurs_LP',
+    growth: '22.73%',
+    available: '0.00',
+    apy: '242.0%',
+    total_staked: '11,875.191',
+    tvl: '1,034.259',
+    price: '0.002',
+  },
+  {
+    id: 3,
+    image: '/multi.png',
+    tokens: ['yDAI', 'yUSDC', 'yUSDT'],
+    deposit: ['3TPA'],
+    receive: ['TPA'],
+    name: 'tpa.finance/3pool_LP',
+    growth: '18.21%',
+    available: '0.00',
+    apy: '242.0%',
+    total_staked: '11,875.191',
+    tvl: '1,034.259',
+    price: '0.002',
+  },
+  {
+    id: 4,
+    image: '/musd.png',
+    tokens: ['mUSD', '3TPA'],
+    deposit: ['musd3TPA'],
+    receive: ['TPA'],
+    name: 'tpa.finance/mUSD_LP',
+    growth: '3.65%',
+    available: '0.00',
+    apy: '242.0%',
+    total_staked: '11,875.191',
+    tvl: '1,034.259',
+    price: '0.002',
+  },
+  {
+    id: 5,
+    image: '/gusd.png',
+    tokens: ['GUSD', '3TPA'],
+    deposit: ['gusd3TPA'],
+    receive: ['TPA'],
+    name: 'tpa.finance/GUSD_LP',
+    growth: '38.38%',
+    available: '0.00',
+    apy: '242.0%',
+    total_staked: '11,875.191',
+    tvl: '1,034.259',
+    price: '0.002',
+  },
+];
+
+export function getPools() {
+  return [...pools];
+}
+
+export function getPool(id) {
+  return pools.find(p => p.id === id);
+}
