@@ -122,7 +122,12 @@
     "title": "Pools",
     "list": "TPA Pool List",
     "yearly": "Yearly Growth:",
-    "available": "Available to deposit:"
+    "available": "Available to deposit:",
+    "earn": "Earn TPA",
+    "staking": "by staking tokens",
+    "pool_title": "TPA Holder",
+    "stake": "Stake {deposit}, earn {receive}",
+    "select": "Select"
   },
   "admin": {
     "title": "TPA Admin",

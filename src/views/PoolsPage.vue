@@ -36,5 +36,8 @@ export default {
 .pools-page {
   background-color: $grey1;
   padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 </style>

@@ -10,6 +10,7 @@
       v-for="pool in pools"
       :key="pool.id"
       class="pool"
+      @click="$router.push({ name: 'Pool', params: { id: pool.id } })"
     >
       <div class="pool-title-wrap">
         <img :src="pool.image">
