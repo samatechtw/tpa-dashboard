@@ -1,6 +1,7 @@
 <template>
 <div class="pool-wrap container">
   <div class="blue-bg" />
+  <PoolsHeader :keys="['dashboard', 'pools.title', 'pools.earn']" />
   <div class="pool-title">
     {{ $t('pools.earn') }}
   </div>
@@ -15,20 +16,45 @@
       {{ $t('pools.stake', { deposit: pool.deposit.join('/'), receive: pool.receive.join('/') }) }}
     </div>
     <img :src="pool.image">
-    <div class="pool-select">
-      {{ $t('pools.select') }}
+    <div class="pool-info">
+      <div class="pool-section">
+        <div>{{ $t('pools.apy') }}</div>
+        <div>{{ pool.apy }}</div>
+      </div>
+      <div class="pool-section">
+        <div>{{ $t('pools.total') }}</div>
+        <div>{{ $t('pools.lp', { n: pool.total_staked}) }}</div>
+      </div>
+      <div class="pool-section">
+        <div>{{ $t('pools.tvl') }}</div>
+        <div>{{ $t('pools.eth', { n: pool.tvl }) }}</div>
+      </div>
+      <div class="pool-section">
+        <div>{{ $t('pools.price') }}</div>
+        <div>{{ $t('pools.eth', { n: pool.price }) }}</div>
+      </div>
+      <div class="pool-select" @click="confirm = true">
+        {{ $t('pools.select') }}
+      </div>
     </div>
   </div>
 </div>
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
   props: {
     pool: {
       type: Object,
       require: true,
     },
+  },
+  setup() {
+    return {
+      confirm,
+    };
   },
 };
 </script>
@@ -38,11 +64,12 @@ export default {
 
 .pool-wrap {
   text-align: center;
+  width: 100%;
   .pool-title {
     @mixin title 26px;
     color: white;
     position: relative;
-    margin-top: 64px;
+    margin-top: 40px;
   }
   .pool-subtitle {
     @mixin text 15px;
@@ -55,17 +82,16 @@ export default {
     border-radius: 4px;
     background-color: white;
     box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.2);
-    margin-top: 40px;
+    margin: 40px auto 0;
     padding: 32px 24px 24px;
-    width: 420px;
+    width: 400px;
     text-align: left;
     display: flex;
     flex-direction: column;
     > img {
       width: 78px;
-      margin-top: 24px;
+      margin: 24px 0;
       align-self: center;
-
     }
   }
   .pool-name {
@@ -78,6 +104,14 @@ export default {
     @mixin semibold 12px;
     color: $dark3;
     margin-top: 16px;
+  }
+  .pool-section {
+    display: flex;
+    justify-content: space-between;
+    @mixin semibold 12px;
+    color: $text-light;
+    padding: 14px 0;
+    border-bottom: 1px solid $border1;
   }
   .pool-select {
     cursor: pointer;

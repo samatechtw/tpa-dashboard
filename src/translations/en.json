@@ -1,5 +1,6 @@
 {
   "dashboard": "Dashboard",
+  "nft": "NFT",
   "connect": "Connect Wallet",
   "disconnect": "Disconnect Wallet",
   "no_wallet": "No Wallet Connected",
@@ -127,7 +128,13 @@
     "staking": "by staking tokens",
     "pool_title": "TPA Holder",
     "stake": "Stake {deposit}, earn {receive}",
-    "select": "Select"
+    "select": "Select",
+    "apy": "APY",
+    "total": "Total Staked",
+    "tvl": "TVL",
+    "price": "TPA Price",
+    "lp": "{n} LP",
+    "eth": "{n} ETH"
   },
   "admin": {
     "title": "TPA Admin",

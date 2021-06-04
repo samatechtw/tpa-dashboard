@@ -52,6 +52,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.6);
   @mixin overlay;
   @mixin flex-center;
+  z-index: 1000;
 }
 .modal-inner {
   position: relative;

@@ -8,6 +8,7 @@ export const STAKING_CONTRACT_ADDRESS = import.meta.env.VITE_STAKING_CONTRACT_AD
 export const FAUCET_CONTRACT_ADDRESS = import.meta.env.VITE_FAUCET_CONTRACT_ADDRESS;
 export const LOCKER_CONTRACT_ADDRESS = import.meta.env.VITE_LOCKER_CONTRACT_ADDRESS;
 export const PURCHASE_LINK = import.meta.env.VITE_PURCHASE_LINK;
+export const NFT_LINK = import.meta.env.VITE_NFT_LINK;
 
 export const purchaseExternal = PURCHASE_LINK && PURCHASE_LINK.startsWith('http');
 

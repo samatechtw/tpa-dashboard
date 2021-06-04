@@ -59,6 +59,7 @@ export default {
 @import '/src/assets/css/global.css';
 
 .pools-wrap {
+  width: 100%;
   .pools-title {
     @mixin title 26px;
     color: white;
@@ -72,11 +73,12 @@ export default {
   .pool {
     display: flex;
     width: 100%;
+    max-width: 800px;
     align-items: center;
     padding: 20px 24px;
     border: 1px solid $border1;
     background-color: white;
-    margin-top: 16px;
+    margin: 16px auto 0;
     cursor: pointer;
   }
   .pool-title-wrap {

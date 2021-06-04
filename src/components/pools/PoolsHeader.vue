@@ -27,6 +27,7 @@ export default {
       links: {
         'dashboard': 'Home',
         'pools.title': 'Pools',
+        'pools.earn': 'Pool',
       },
     };
   },

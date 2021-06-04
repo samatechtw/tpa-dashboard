@@ -28,6 +28,11 @@
           {{ $t('pools.title') }}
         </div>
       </router-link>
+      <a target="_blank" :href="nftLink">
+        <div class="header-link">
+          {{ $t('nft') }}
+        </div>
+      </a>
       <div class="header-right">
         <LanguageSelect />
         <div class="header-right-text" @click="showConnectModal">
@@ -48,6 +53,7 @@
 import { useI18n } from 'vue-i18n';
 import { useStore } from '/src/store';
 import useChain from '/src/chain/useChain';
+import { NFT_LINK } from '/src/utils/config';
 
 export default {
   name: 'tpa-header',
@@ -68,6 +74,7 @@ export default {
     return {
       address,
       showConnectModal,
+      nftLink: NFT_LINK,
     };
   }
 };
