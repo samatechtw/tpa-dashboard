@@ -17,7 +17,6 @@
 <script>
 
 export default {
-  name: 'error-message',
   props: {
     errorMessage: {
       type: String,

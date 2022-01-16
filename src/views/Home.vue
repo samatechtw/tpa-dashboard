@@ -6,9 +6,6 @@
     <div v-else-if="loadingAccount" class="tpa-empty">
       <Spinner />
     </div>
-    <div v-else-if="wrongNetwork" class="tpa-empty">
-      {{ $t('wrong_network', { network: ETH_NETWORK }) }}
-    </div>
     <div v-else class="tpa-empty">
       {{ $t('no_wallet') }}
     </div>
@@ -20,8 +17,7 @@
 <script>
 import { useI18n } from 'vue-i18n';
 import { useStore } from '/src/store';
-import useChain from '/src/chain/useChain';
-import { ETH_NETWORK } from '/src/utils/config';
+import { useTpa } from '/src/chain/useTpa';
 
 export default {
   name: 'home',
@@ -31,14 +27,11 @@ export default {
     const {
       loadingAccount,
       walletConnected,
-      wrongNetwork,
-    } = useChain(store, t);
-    
+    } = useTpa(store);
+
     return {
       loadingAccount,
       walletConnected,
-      wrongNetwork,
-      ETH_NETWORK,
     };
   },
 };

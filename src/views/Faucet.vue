@@ -45,7 +45,7 @@ import {
 } from '/src/utils/config';
 import { useStore, TxType } from '/src/store';
 import { getContract } from '/src/chain/contracts';
-import useChain from '/src/chain/useChain';
+import { useTpa } from '/src/chain/useTpa';
 
 const FaucetAbi = [
   {
@@ -96,7 +96,7 @@ export default {
       getError,
       toEthDisplay,
       walletConnected,
-    } = useChain(store, t);
+    } = useTpa(store);
 
     const updateFaucetBalance = async () => {
       const val = await getBalance(FAUCET_CONTRACT_ADDRESS);

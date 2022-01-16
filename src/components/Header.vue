@@ -52,7 +52,7 @@
 <script>
 import { useI18n } from 'vue-i18n';
 import { useStore } from '/src/store';
-import useChain from '/src/chain/useChain';
+import { useTpa } from '/src/chain/useTpa';
 import { NFT_LINK } from '/src/utils/config';
 
 export default {
@@ -61,7 +61,7 @@ export default {
     const store = useStore();
     const { t } = useI18n();
     const { address } = store;
-    const { showConnect, disconnectWallet } = useChain(store, t);
+    const { showConnect, disconnectWallet } = useTpa(store);
 
     const showConnectModal = () => {
       if(address.value) {
@@ -70,7 +70,7 @@ export default {
         showConnect.value = true;
       }
     };
-    
+
     return {
       address,
       showConnectModal,

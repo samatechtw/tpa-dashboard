@@ -64,8 +64,8 @@
 <script>
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import useChain from '/src/chain/useChain';
-import { useStore, TxStatus, TxType } from '/src/store';
+import { useTpa, TxStatus } from '/src/chain/useTpa';
+import { useStore, TxType } from '/src/store';
 
 export default {
   props: {
@@ -85,7 +85,7 @@ export default {
       submitApproval,
       submitDividend,
       submitAddAdmin,
-    } = useChain(store, t);
+    } = useTpa(store);
     const { latestTx } = store;
     const allowance = ref(null);
     const amountToPost = ref(0);
@@ -144,7 +144,7 @@ export default {
     const post = async () => {
       postError.value = null;
       try {
-        await submitDividend(toWei(amountToPost.value));        
+        await submitDividend(toWei(amountToPost.value));
       } catch(e) {
         postError.value = getError(e);
       }

@@ -34,7 +34,7 @@
 <script>
 import { useI18n } from 'vue-i18n';
 import { useStore } from '/src/store';
-import useChain from '/src/chain/useChain';
+import { useTpa } from '/src/chain/useTpa';
 
 export default {
   props: {
@@ -48,11 +48,11 @@ export default {
     const { t } = useI18n();
     const {
       walletConnected,
-    } = useChain(store, t);
-    
+    } = useTpa(store);
+
     return {
       walletConnected,
-    };    
+    };
   },
 };
 </script>

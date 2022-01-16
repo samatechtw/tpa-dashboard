@@ -45,9 +45,9 @@
 
 <script>
 import { ref, computed, watch, toRefs } from 'vue';
-import { useStore, TxType, TxStatus } from '/src/store';
-import useChain from '/src/chain/useChain';
 import { useI18n } from 'vue-i18n';
+import { useTpa, TxStatus } from '/src/chain/useTpa';
+import { useStore, TxType } from '/src/store';
 
 const isTxActive = tx => (
   tx.status === TxStatus.PENDING || tx.status === TxStatus.SUBMITTED
@@ -69,7 +69,7 @@ export default {
       submitApproval,
       getError,
       toWei,
-    } = useChain(store, t);
+    } = useTpa(store);
     const { latestTx } = store;
     const amountToApprove = ref(100000);
     const inputError = ref(null);
@@ -101,7 +101,7 @@ export default {
     const stake = async () => {
       inputError.value = null;
       try {
-        await submitStake(toWei(allowance.value));        
+        await submitStake(toWei(allowance.value));
       } catch(e) {
         inputError.value = getError(e);
       }

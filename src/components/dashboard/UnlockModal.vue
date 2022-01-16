@@ -38,9 +38,9 @@
 
 <script>
 import { ref, computed, watch, toRefs } from 'vue';
-import { useStore, TxType, TxStatus } from '/src/store';
-import useChain from '/src/chain/useChain';
+import { useTpa, TxStatus } from '/src/chain/useTpa';
 import { useI18n } from 'vue-i18n';
+import { useStore, TxType } from '/src/store';
 
 const isTxActive = tx => (
   tx.status === TxStatus.PENDING || tx.status === TxStatus.SUBMITTED
@@ -64,7 +64,7 @@ export default {
       getUserLocked,
       toEthDisplay,
       getUnstakeDays,
-    } = useChain(store, t);
+    } = useTpa(store);
     const { latestTx } = store;
     const error = ref(null);
     const unstakeDays = ref('?');
@@ -78,7 +78,7 @@ export default {
     const unlock = async () => {
       error.value = null;
       try {
-        await submitUnstake();        
+        await submitUnstake();
       } catch(e) {
         error.value = getError(e);
       }

@@ -121,7 +121,7 @@
 import { computed, ref } from 'vue';
 import { useStore } from '/src/store';
 import { useI18n } from 'vue-i18n';
-import useChain from '/src/chain/useChain';
+import { useTpa } from '/src/chain/useTpa';
 import {
   PURCHASE_LINK,
   purchaseExternal,
@@ -148,7 +148,7 @@ export default {
       tpaWindowFirstAmount,
       tpaWindowLastAmount,
     } = store;
-    const { toEth, toEthDisplay } = useChain(store, t);
+    const { toEth, toEthDisplay } = useTpa(store);
     const showStakeModal = ref(false);
     const showUnstakeModal = ref(false);
     const showUnlockModal = ref(false);

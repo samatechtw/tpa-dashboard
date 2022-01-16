@@ -28,9 +28,9 @@
 import { computed, onMounted, toRefs, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { formatDistanceToNow } from 'date-fns';
-import useChain from '/src/chain/useChain';
+import { useTpa, TxStatus } from '/src/chain/useTpa';
 import { etherscanLink } from '/src/utils/config';
-import { useStore, TxStatus } from '/src/store';
+import { useStore } from '/src/store';
 
 export default {
   props: {
@@ -43,7 +43,7 @@ export default {
     const { tx } = toRefs(props);
     const { t } = useI18n();
     const store = useStore();
-    const { getTxReceipt } = useChain(store, t);
+    const { getTxReceipt } = useTpa(store);
 
     const checkTx = async () => {
       if(tx.value && tx.value.status !== TxStatus.COMPLETED) {

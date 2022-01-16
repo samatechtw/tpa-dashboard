@@ -1,13 +1,6 @@
 import { reactive, computed, watch } from 'vue';
 import { sub } from 'date-fns';
 
-const storeName = 'dashboard-store';
-
-// Maximum number of historical transactions stored
-const TX_HISTORY_LIMIT = 20;
-
-const DAY_MS = 1000 * 60 * 60 * 24;
-
 export const TxType = {
   APPROVAL: 'tx.approval',
   STAKE: 'tx.stake',
@@ -20,12 +13,12 @@ export const TxType = {
   ADD_ADMIN: 'tx.add_admin',
 };
 
-export const TxStatus = {
-  SUBMITTED: 'tx.submitted',
-  PENDING: 'tx.pending',
-  COMPLETED: 'tx.completed',
-  FAILED: 'tx.failed',
-};
+const storeName = 'dashboard-store';
+
+// Maximum number of historical transactions stored
+const TX_HISTORY_LIMIT = 20;
+
+const DAY_MS = 1000 * 60 * 60 * 24;
 
 const timeDiffs =[
   { weeks: 1 },

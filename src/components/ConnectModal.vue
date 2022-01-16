@@ -11,7 +11,7 @@
       <div
         class="metamask option-button"
         :class="{ selected: selected === 'metamask' }"
-        @click="selected = 'metamask'"
+        @click="select('metamask')"
       >
         <img :src="Metamask">
         <div>{{ $t('select.metamask') }}</div>
@@ -19,18 +19,18 @@
       <div
         class="walletconnect option-button"
         :class="{ selected: selected === 'walletconnect' }"
-        @click="selected = 'walletconnect'"
+        @click="select('walletconnect')"
       >
         <img :src="Walletconnect">
         <div>{{ $t('select.walletconnect') }}</div>
       </div>
     </div>
-    <div v-if="connectError" class="connect-error">
-      {{ connectError }}
+    <div v-if="error" class="connect-error">
+      {{ error }}
     </div>
     <div class="connect-button-wrap">
       <div class="connect-button" @click="connectWallet(selected)">
-        {{ $t('select.connect') }}
+        <LoadingText :text="$t('select.connect')" :loading="loadingAccount" />
       </div>
     </div>
   </div>
@@ -38,13 +38,13 @@
 </template>
 
 <script>
-import { onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from '/src/store';
-import useChain from '/src/chain/useChain';
+import { useTpa } from '/src/chain/useTpa';
+import { ETH_NETWORK } from '/src/utils/config';
 
 export default {
-  name: 'connect-modal',
   setup() {
     const store = useStore();
     const { t } = useI18n();
@@ -54,7 +54,9 @@ export default {
       connectWallet,
       reconnectWallet,
       showConnect,
-    } = useChain(store, t);
+      loadingAccount,
+      wrongNetwork,
+    } = useTpa(store);
     const selected = ref('metamask');
 
     onBeforeMount(async () => {
@@ -62,13 +64,30 @@ export default {
         await reconnectWallet();
       }
     });
-    
+
+    const error = computed(() => {
+      if(connectError.value) {
+        return t(connectError.value);
+      }
+      if(wrongNetwork.value) {
+        return t('wrong_network', { network: ETH_NETWORK });
+      }
+      return null;
+    });
+
+    const select = (walletName) => {
+      connectError.value = null;
+      selected.value = walletName;
+    };
+
     return {
-      connectError,
+      error,
       address,
       connectWallet,
       showConnect,
       selected,
+      select,
+      loadingAccount,
     };
   },
 };
@@ -144,9 +163,11 @@ export default {
   }
   .connect-button {
     @mixin title 15px;
+    text-align: center;
     color: white;
     background-color: $blue;
-    padding: 10px 16px;
+    padding: 10px 0;
+    width: 102px;
     border-radius: 4px;
     cursor: pointer;
   }
